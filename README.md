@@ -8,3 +8,4 @@ Será utilizado os 4 modelos probit proposto em Kauppi e Saikonen (2008) e técn
 
 
 
+testando git comit
