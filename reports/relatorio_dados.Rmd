@@ -2,9 +2,7 @@
 title: "Relatório Dados Brasileiros"
 author: "Gabriel Lopes Rodrigues"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
-output:
-  pdf_document: default
-  html_document: default
+output: github_document
 ---
 
 ```{r setup, include=FALSE}
