@@ -16,7 +16,7 @@ rec_plot <- function(y, titulo, cor){
     geom_line(colour = cor, size = 0.7)+
     geom_ribbon(
       aes(x = data,
-          ymax = ifelse(dummy == 1, max(y),min(y)), 
+          ymax = ifelse(dummy == 0, max(y),min(y)), 
           ymin = min(y), 
           alpha=0.5))+
     ylim(min(y),max(y))+

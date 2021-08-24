@@ -101,14 +101,14 @@ df <- df |>
 ### até 2019.12: CAGED12_DESLIG
 ### apartir 2020.01: CAGED12_DESLIGN12
 
-tcb <- c("CNI12_HTRABD12", "ABPO12_PAPEL12", "PIMPFN12_QIIGSNAS12", 
+tcb.cod <- c("CNI12_HTRABD12", "ABPO12_PAPEL12", "PIMPFN12_QIIGSNAS12", 
          "CNI12_ICEIGER12", "GAC12_INDFBCFCCDESSAZ12", "BM12_M1MN12", 
          "FCESP12_IICF12", "CAGED12_DESLIG", "CAGED12_DESLIGN12")
 
 nomes.tcb <- c("trab_ind", "exp_papel", "prod_ind", "icei", "fbcf_cc", "m1", 
                "iec", "dem_desc", "dem_att")
 # Iterando
-df.tcb <- lapply(tcb, ipea.api)
+df.tcb <- lapply(tcb.cod, ipea.api)
 
 # Renomeando listas
 
