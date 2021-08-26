@@ -25,8 +25,7 @@ jobs:
          R -e 'install.packages("BCDating")'
          R -e 'install.packages("timetk")'
          R -e 'install.packages("jsonlite")'
-         sudo apt-get libcurl4-openssl-dev
-         sudo apt-get libssl-dev
+         R -e 'install.packages("openssl")'
          R -e 'install.packages("httr")'
     # Run R script
     - name: Data-Pipe
