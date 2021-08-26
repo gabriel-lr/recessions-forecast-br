@@ -17,8 +17,11 @@ jobs:
     # Set-up R
     - name: Install packages
       run: |
-         R -e 'install.packages("renv")'
-         R -e 'renv::restore()'          
+         R -e 'install.packages("tidyverse")'
+         R -e 'install.packages("sidrar")'
+         R -e 'install.packages("TSStudio")'
+         R -e 'install.packages("BCDating")'
+         R -e 'install.packages("timetk")'
     # Run R script
     - name: Data-Pipe
       run: Rscript dados/data_pipe.R
