@@ -2,31 +2,13 @@ name: data_request
 on: [push]
 jobs:
   generate-data:
-    runs-on: ${{ matrix.config.os }}
-
-    name: ${{ matrix.config.os }} (${{ matrix.config.r }})
-
-    strategy:
-      fail-fast: false
-      matrix:
-        config:
-          - {os: ubuntu-latest,   r: 'release'}
-
-    env:
-      R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
-      RSPM: ${{ matrix.config.rspm }}
-      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-
+    runs-on: [ubuntu-latest]
     steps:
       - uses: actions/checkout@v2
-
+        
+      - name: Setup R  
       - uses: r-lib/actions/setup-r@master
-        with:
-          r-version: ${{ matrix.config.r }}
-          http-user-agent: ${{ matrix.config.http-user-agent }}
-
-      - uses: r-lib/actions/setup-pandoc@master
-
+      
       - name: Setup dependencies
         run: |
           R -e 'install.packages("renv")'
@@ -35,10 +17,8 @@ jobs:
       - name: Generate data
         run: |
           R -e 'renv::run("dados/data_pipe.R")'
-          shell: Rscript{0}
-        
-         
-        
+      
+                 
       - name: Commit files
         run: |
           git config --local user.email "actions@github.com"
