@@ -11,14 +11,14 @@ jobs:
       
       - name: Setup dependencies
         run: |
-          R -e 'install.packages("renv")'
-          R -e 'renv::restore()'      
+          R 'install.packages("renv")' -v
+          R 'renv::restore()' -v     
         
       - name: Generate data
         env: 
           repo_token: ${{ secrets.GITHUB_TOKEN }} 
         run: |
-          Rscript dados/data_pipe.R
+          Rscript dados/data_pipe.R -v
       
                  
       - name: Commit files
