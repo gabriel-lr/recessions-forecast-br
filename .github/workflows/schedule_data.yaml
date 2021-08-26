@@ -1,7 +1,9 @@
+name: data_request
 on: [push]
 jobs:
   generate-data:
     runs-on: [ubuntu-latest]
+    container: docker://dvcorg/cml:latest
     steps:
       - uses: actions/checkout@v2
         
