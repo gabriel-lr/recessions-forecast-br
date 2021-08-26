@@ -1,6 +1,8 @@
 ## API Request
 
-library(tidyverse)
+library(dplyr)
+library(purrr)
+
 ##------Solicitando os dados via api-----------#
 
 # Funcao
