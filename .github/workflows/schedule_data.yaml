@@ -17,11 +17,15 @@ jobs:
     # Set-up R
     - name: Install packages
       run: |
-         R -e 'install.packages("tidyverse")'
+         R -e 'install.packages("dplyr")'
+         R -e 'install.packages("purrr")'
+         R -e 'install.packages("stringr")'
          R -e 'install.packages("sidrar")'
          R -e 'install.packages("TSStudio")'
          R -e 'install.packages("BCDating")'
          R -e 'install.packages("timetk")'
+         R -e 'install.packages("jsonlite")'
+         R -e 'install.packages("httr")'
     # Run R script
     - name: Data-Pipe
       run: Rscript dados/data_pipe.R
