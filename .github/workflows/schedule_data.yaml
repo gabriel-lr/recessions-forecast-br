@@ -17,12 +17,11 @@ jobs:
     # Set-up R
     - name: Install packages
       run: |
-        R -e 'install.packages("tidyverse")'
-        R -e 'install.packages("TSstudio")'
-        R -e 'install.packages("BCDating")'
+         R -e 'install.packages("renv")'
+         R -e 'renv::restore()'          
     # Run R script
     - name: Data-Pipe
-      run: Rscript data_pipe.R
+      run: Rscript dados/data_pipe.R
       
                  
     - name: Commit files
