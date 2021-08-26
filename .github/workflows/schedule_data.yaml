@@ -2,58 +2,26 @@ name: data_request
 on: [push]
 jobs:
   generate-data:
-    runs-on: ${{ matrix.config.os }}
-
-    name: ${{ matrix.config.os }} (${{ matrix.config.r }})
-
-    strategy:
-      fail-fast: false
-      matrix:
-        config:
-          - {os: ubuntu-latest,   r: 'release'}
-
-    env:
-      R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
-      RSPM: ${{ matrix.config.rspm }}
-      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-
+    runs-on: [ubuntu-latest]
+    container: docker://dvcorg/cml:latest
     steps:
       - uses: actions/checkout@v2
-
-      - uses: r-lib/actions/setup-r@master
-        with:
-          r-version: ${{ matrix.config.r }}
-          http-user-agent: ${{ matrix.config.http-user-agent }}
-
-      - uses: r-lib/actions/setup-pandoc@master
-
-      - name: Query dependencies
-        run: |
-          install.packages('tidyverse')
-          install.packages('lubridate')
-          install.packages('TSstudio')
-          install.packages('BCDating')
-          install.packages('remotes')
-          install.packages('sessioninfo')
         
-
-      - name: Cache R packages
-        uses: actions/cache@v1
-        with:
-          path: ${{ env.R_LIBS_USER }}
-          key: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-${{ hashFiles('.github/depends.Rds') }}
-          restore-keys: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-
-
-      - name: Install dependencies
-        run: |
-          remotes::install_deps(dependencies = TRUE)
+ 
+      - uses: r-lib/actions/setup-r@master
       
+      - name: Setup dependencies
+        run: |
+          R -e 'install.packages("renv")'
+          R -e 'renv::restore()'      
         
       - name: Generate data
+        env: 
+          repo_token: ${{ secrets.GITHUB_TOKEN }} 
         run: |
-          source("data_pipe.R")
-         
-        
+          R -e 'renv::run("dados/data_pipe.R")'
+      
+                 
       - name: Commit files
         run: |
           git config --local user.email "actions@github.com"
