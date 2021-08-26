@@ -7,7 +7,7 @@ on: [push]
 jobs: 
   autoscrape:
     # The type of runner that the job will run on
-    runs-on: windows-latest
+    runs-on: linux-latest
 
     # Load repo and install R
     steps:
@@ -16,7 +16,7 @@ jobs:
 
     # Set-up R
     - name: Install packages
-      run: |
+      run: |        
          R -e 'install.packages("dplyr")'
          R -e 'install.packages("purrr")'
          R -e 'install.packages("stringr")'
@@ -25,6 +25,8 @@ jobs:
          R -e 'install.packages("BCDating")'
          R -e 'install.packages("timetk")'
          R -e 'install.packages("jsonlite")'
+         sudo apt-get libcurl4-openssl-dev
+         sudo apt-get libssl-dev
          R -e 'install.packages("httr")'
     # Run R script
     - name: Data-Pipe
