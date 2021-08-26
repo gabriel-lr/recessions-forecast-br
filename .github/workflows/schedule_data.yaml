@@ -18,7 +18,7 @@ jobs:
         env: 
           repo_token: ${{ secrets.GITHUB_TOKEN }} 
         run: |
-          Rscript data_pipe.R
+          Rscript dados/data_pipe.R
       
                  
       - name: Commit files
