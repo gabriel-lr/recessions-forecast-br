@@ -2,23 +2,26 @@ name: data_request
 on: [push]
 jobs:
   generate-data:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
         
  
       - uses: r-lib/actions/setup-r@master
       
+      - name: Install libcurl
+        run: sudo apt-get install libcurl4-openssl-dev
+      
       - name: Setup dependencies
         run: |
-          R 'install.packages("renv")' -v
-          R 'renv::restore()' -v     
-        
+          R -e 'install.packages("renv")'
+          R -e 'renv::restore()'
+              
       - name: Generate data
         env: 
           repo_token: ${{ secrets.GITHUB_TOKEN }} 
         run: |
-          Rscript dados/data_pipe.R -v
+          Rscript -e dados/data_pipe.R
       
                  
       - name: Commit files
