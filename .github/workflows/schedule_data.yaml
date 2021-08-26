@@ -34,7 +34,7 @@ jobs:
         
       - name: Generate data
         run: |
-          source("data_pipe.R")
+          R -e 'renv::run("data_pipe.R")'
          
         
       - name: Commit files
