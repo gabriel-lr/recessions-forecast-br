@@ -1,4 +1,4 @@
-    jobs:
+jobs:
   generate-data:
     runs-on: ${{ matrix.config.os }}
 
