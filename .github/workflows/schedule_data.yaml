@@ -33,10 +33,9 @@ jobs:
           R -e 'renv::restore()'      
         
       - name: Generate data
-        env: 
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
         run: |
           R -e 'renv::run("dados/data_pipe.R")'
+          shell: Rscript{0}
         
          
         
