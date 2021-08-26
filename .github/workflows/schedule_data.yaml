@@ -19,7 +19,7 @@ jobs:
         env: 
           repo_token: ${{ secrets.GITHUB_TOKEN }} 
         run: |
-          R -e 'renv::run("dados/data_pipe.R")'
+          R -e 'renv::run("recessions-forecast-br/dados/data_pipe.R")'
       
                  
       - name: Commit files
