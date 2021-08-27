@@ -3,7 +3,6 @@ name: data-generate
 # Controls when the action will run.
 on: [push]
 
-
 jobs: 
   autoscrape:
     # The type of runner that the job will run on
@@ -34,6 +33,29 @@ jobs:
     # Run R script
     - name: Data-Pipe
       run: Rscript dados/data_pipe.R
+
+jobs:
+  generate-data:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        
+ 
+      - uses: r-lib/actions/setup-r@master
+      
+      - name: Install libcurl
+        run: sudo apt-get install libcurl4-openssl-dev
+      
+      - name: Setup dependencies
+        run: |
+          R -e 'install.packages("renv")'
+          R -e 'renv::restore()'
+              
+      - name: Generate data
+        env: 
+          repo_token: ${{ secrets.GITHUB_TOKEN }} 
+        run: |
+          Rscript -e dados/data_pipe.R
       
                  
     - name: Commit files
