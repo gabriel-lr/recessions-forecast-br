@@ -1,18 +1,13 @@
 # Rodando Modelo!!
 
-source("dados/api_request.R")
-source("dados/teste_tcb.R")
-
-
+library(tidyverse)
 library(EWS)
 library(glmnet)
 
 
 # Merge nos dados
 
-df.train <- df |> 
-  inner_join(index_tcb, by = "data") |> 
-  inner_join(codace, by = "data") |> 
+df.train <- my_data |> 
   drop_na()
 
 
@@ -78,4 +73,3 @@ lines(x1_range[-1], dyn_aut$prob,
       col="green")
 # add a horizontal line at p=.5
 abline(h=.5, lty=2)
-
