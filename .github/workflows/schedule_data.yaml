@@ -24,7 +24,7 @@ jobs:
          R -e 'install.packages("purrr")'
          R -e 'install.packages("stringr")'
          R -e 'install.packages("sidrar")'
-         R -e 'install.packages("TSStudio")'
+         R -e 'install.packages("TSstudio")'
          R -e 'install.packages("BCDating")'
          R -e 'install.packages("timetk")'
          R -e 'install.packages("jsonlite")'
