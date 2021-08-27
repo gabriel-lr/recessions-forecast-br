@@ -67,7 +67,7 @@ rm(il)
 
 df <- df |> 
   mutate(il = as.numeric(valor)) |> 
-  dpylr::select(-valor) |> 
+  dplyr::select(-valor) |> 
   arrange(data)
 
 
@@ -128,7 +128,7 @@ df.tcb$data <- stringr::str_remove(df.tcb$data, pattern = "T.*$") |>
 
 df.teste <- df.tcb |> 
   mutate(dem_cons = dplyr::coalesce(dem_desc,dem_att)) |> # encadeando séries de demissões
-  dpylr::select(-dem_desc, -dem_att) |> 
+  dplyr::select(-dem_desc, -dem_att) |> 
   tidyr::drop_na()
 
 # Cáculo Média Simétrica da variação mensal de cada série
@@ -176,7 +176,7 @@ rm(index)
 # Padronizando para 2014 = 100
 
 index_tcb <- index.data |> 
-  dpylr::transmute(data = data,
+ dplyr::transmute(data = data,
             tcb = (index * 100) / mean(index.data[
               which(index.data$data == "2014-01-01"):which(index.data$data == "2014-12-01"),2
               ]))
@@ -190,7 +190,7 @@ rm(df.tcb)
 
 # Coleta e tratamento de dados
 pib <- sidrar::get_sidra(api = "/t/1621/n1/all/v/all/p/all/c11255/90707/d/v584%202") |> 
-  dpylr::select("date" = `Trimestre (Código)`, "value" = `Valor`)  |> 
+  dplyr::select("date" = `Trimestre (Código)`, "value" = `Valor`)  |> 
   mutate(value = value, date = lubridate::yq(date)) |> 
   as_tibble()
 
@@ -207,14 +207,14 @@ codace <- TSstudio::ts_reshape(bc_dates@states, type = "long") |>
   mutate(ntimes = 3)
 
 codace <- as.data.frame(lapply(codace, rep, codace$ntimes)) |> 
-  dpylr::select(-quarter, -ntimes) |> 
-  dpylr::group_by(year) |> 
-  dpylr::transmute(ano = year,
+  dplyr::select(-quarter, -ntimes) |> 
+  dplyr::group_by(year) |> 
+  dplyr::transmute(ano = year,
             mes = ifelse(year < 2021, seq(1:12), seq(1:3)),
             dummy = gsub("1", "0", value)) |>
-  dpylr::ungroup() |> 
-  dpylr::select(-year) |> 
-  dpylr::transmute(data = seq(as.Date("1996/01/01"), by = "month", length.out = 303),
+  dplyr::ungroup() |> 
+  dplyr::select(-year) |> 
+  dplyr::transmute(data = seq(as.Date("1996/01/01"), by = "month", length.out = 303),
             dummy = gsub("-0", "1", dummy))
 
 codace$dummy <- as.numeric(codace$dummy)
