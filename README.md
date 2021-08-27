@@ -1,3 +1,4 @@
+![example workflow](https://github.com/gabriel-lr/recessions-forecast-br/actions/workflows/schedule_data.yaml/badge.svg)
 # recessions-forecast-br
 Pesquisa de Mestrado desenvolvida no PPGEco Ufes.
 
@@ -14,8 +15,6 @@ Serão utilizados os 4 modelos probit proposto em Kauppi e Saikonen (2008) e té
 /report: Scripts dos reports via Rmarkdown.
 
 /workflow/schedule_data.yaml: Automate R script 'data_pipe.R' and create "my_data.rds" object.
-
-
 
 
 
