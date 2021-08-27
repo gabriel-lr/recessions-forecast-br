@@ -13,7 +13,7 @@ jobs:
     - uses: actions/checkout@master
     - uses: r-lib/actions/setup-r@master
     
-    # setting libcurl
+    # setting Libcurl
     - name: Install libcurl
       run: sudo apt-get install libcurl4-openssl-dev
    
