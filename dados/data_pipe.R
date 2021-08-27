@@ -1,6 +1,8 @@
 ## API Request
 
-library(tidyverse)
+library(dplyr)
+library(purrr)
+
 ##------Solicitando os dados via api-----------#
 
 # Funcao
@@ -36,7 +38,7 @@ df <- df |>
          ibov = VALVALOR.y,
          data = VALDATA)
 # Transformando em data
-df$data <- str_remove(df$data, pattern = "T.*$") |> 
+df$data <- stringr::str_remove(df$data, pattern = "T.*$") |> 
   as.Date(format = "%Y-%m-%d")
 
 # Buscando Series no BCB SGS
@@ -65,7 +67,7 @@ rm(il)
 
 df <- df |> 
   mutate(il = as.numeric(valor)) |> 
-  select(-valor) |> 
+  dplyr::select(-valor) |> 
   arrange(data)
 
 
@@ -126,8 +128,8 @@ df.tcb$data <- stringr::str_remove(df.tcb$data, pattern = "T.*$") |>
 
 df.teste <- df.tcb |> 
   mutate(dem_cons = dplyr::coalesce(dem_desc,dem_att)) |> # encadeando séries de demissões
-  select(-dem_desc, -dem_att) |> 
-  drop_na()
+  dplyr::select(-dem_desc, -dem_att) |> 
+  tidyr::drop_na()
 
 # Cáculo Média Simétrica da variação mensal de cada série
 mensal <- 200 * ((df.teste[,-1] - lag(df.teste[,-1])) / (df.teste[,-1]+lag(df.teste[,-1])))
@@ -174,7 +176,7 @@ rm(index)
 # Padronizando para 2014 = 100
 
 index_tcb <- index.data |> 
-  transmute(data = data,
+ dplyr::transmute(data = data,
             tcb = (index * 100) / mean(index.data[
               which(index.data$data == "2014-01-01"):which(index.data$data == "2014-12-01"),2
               ]))
@@ -188,7 +190,7 @@ rm(df.tcb)
 
 # Coleta e tratamento de dados
 pib <- sidrar::get_sidra(api = "/t/1621/n1/all/v/all/p/all/c11255/90707/d/v584%202") |> 
-  select("date" = `Trimestre (Código)`, "value" = `Valor`)  |> 
+  dplyr::select("date" = `Trimestre (Código)`, "value" = `Valor`)  |> 
   mutate(value = value, date = lubridate::yq(date)) |> 
   as_tibble()
 
@@ -205,14 +207,14 @@ codace <- TSstudio::ts_reshape(bc_dates@states, type = "long") |>
   mutate(ntimes = 3)
 
 codace <- as.data.frame(lapply(codace, rep, codace$ntimes)) |> 
-  select(-quarter, -ntimes) |> 
-  group_by(year) |> 
-  transmute(ano = year,
+  dplyr::select(-quarter, -ntimes) |> 
+  dplyr::group_by(year) |> 
+  dplyr::transmute(ano = year,
             mes = ifelse(year < 2021, seq(1:12), seq(1:3)),
             dummy = gsub("1", "0", value)) |>
-  ungroup() |> 
-  select(-year) |> 
-  transmute(data = seq(as.Date("1996/01/01"), by = "month", length.out = 303),
+  dplyr::ungroup() |> 
+  dplyr::select(-year) |> 
+  dplyr::transmute(data = seq(as.Date("1996/01/01"), by = "month", length.out = 303),
             dummy = gsub("-0", "1", dummy))
 
 codace$dummy <- as.numeric(codace$dummy)
@@ -224,3 +226,4 @@ data.final <- df |>
   full_join(codace, by = "data") |> 
   arrange(data)
 
+saveRDS(data.final, file = "my_data.rds")
