@@ -226,3 +226,4 @@ data.final <- df |>
   full_join(codace, by = "data") |> 
   arrange(data)
 
+saveRDS(data.final, file = "my_data.rds")
