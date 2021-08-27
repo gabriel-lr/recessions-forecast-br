@@ -14,7 +14,7 @@ Serão utilizados os 4 modelos probit proposto em Kauppi e Saikonen (2008) e té
 
 /report: Scripts dos reports via Rmarkdown.
 
-/workflow/schedule_data.yaml: Automate R script 'data_pipe.R' and create "my_data.rds" object.
+/workflow/schedule_data.yaml:  job 'data-generate' Automate R script 'data_pipe.R' and create "my_data.rds" object.
 
 
 
