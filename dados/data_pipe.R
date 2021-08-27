@@ -38,7 +38,7 @@ df <- df |>
          ibov = VALVALOR.y,
          data = VALDATA)
 # Transformando em data
-df$data <- str_remove(df$data, pattern = "T.*$") |> 
+df$data <- stringr::str_remove(df$data, pattern = "T.*$") |> 
   as.Date(format = "%Y-%m-%d")
 
 # Buscando Series no BCB SGS
