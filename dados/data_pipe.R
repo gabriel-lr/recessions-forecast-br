@@ -6,7 +6,6 @@ library(purrr)
 ##------Solicitando os dados via api-----------#
 
 # Funcao
-## Posteriormente trabalhar a efici?ncia do c?digo, est? mto pesado.
 
 ipea.api <- function(cod, ap = ap){
   res <- httr::GET(paste("http://www.ipeadata.gov.br/api/odata4/ValoresSerie(SERCODIGO='",cod,"')", sep =""))
@@ -16,11 +15,6 @@ ipea.api <- function(cod, ap = ap){
     dplyr::select(VALDATA, VALVALOR)
   return(ap)
 }
-
-# C?digos API IPEA
-## SWAP DI 360 m?dia: BMF12_SWAPDI360F12
-## IBOVESPA FECHAMENTO % MENSAL: ANBIMA12_IBVSP12
-## FIPEZAP VPRE?O VENDA BRASIL: FIPE12_VENBR12
 
 codigos <- c("BMF12_SWAPDI360F12", "ANBIMA12_IBVSP12", "FIPE12_VENBR12" )
 
@@ -48,7 +42,6 @@ bcb.api <- function(cod){
   df <- jsonlite::fromJSON(rawToChar(res$content))
 }
 
-## IL SGS: 28448
 
 il <- bcb.api(28448)
 
@@ -71,27 +64,10 @@ df <- df |>
   arrange(data)
 
 
-### Pipe de importa??o e tratamento dos Dados conclu?da com sucesso!!!!!
-
-
 ##--------------------- DADOS TCB -----------------------##
 
 
 # Códigos
-
-#IPEA API
-
-## Horas Trabalhadas Industria Dessaz: CNI12_HTRABD12
-## Exped Papel Ondulado QTD: ABPO12_PAPEL12
-## Prod Industria Geral Ind Base fix dessaz: PIMPFN12_QIIGSNAS12
-## Index conf. empresario industrial geral: CNI12_ICEIGER12
-## Indicador IPEA FBCF Const Civil Dessaz: GAC12_INDFBCFCCDESSAZ12
-## M1 Média Período: BM12_M1MN12
-## Ind. Expec Consumidor IEC: FCESP12_IICF12
-
-## Total Demissões
-### até 2019.12: CAGED12_DESLIG
-### apartir 2020.01: CAGED12_DESLIGN12
 
 tcb.cod <- c("CNI12_HTRABD12", "ABPO12_PAPEL12", "PIMPFN12_QIIGSNAS12", 
              "CNI12_ICEIGER12", "GAC12_INDFBCFCCDESSAZ12", "BM12_M1MN12", 
