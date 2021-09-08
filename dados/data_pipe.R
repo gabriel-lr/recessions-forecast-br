@@ -172,7 +172,7 @@ pib <- sidrar::get_sidra(api = "/t/1621/n1/all/v/all/p/all/c11255/90707/d/v584%2
 
 
 # Obter datacao de ciclo de negocios
-bc_dates <- pib %>%
+bc_dates <- pib |> 
   timetk::tk_ts(select = value, start = c(1996, 1), frequency = 4) |> 
   BCDating::BBQ(name = "Ciclo de Negócios do PIB do Brasil")
 
@@ -182,16 +182,33 @@ bc_dates <- pib %>%
 codace <- TSstudio::ts_reshape(bc_dates@states, type = "long") |> 
   mutate(ntimes = 3)
 
+leng.hp <- max(pib$date) |> 
+  lubridate::interval(as.Date("1996/01/01")) |> 
+  lubridate::as.period(unit = "months")
+
+if(lubridate::month(max(pib$date)) != 12){
 codace <- as.data.frame(lapply(codace, rep, codace$ntimes)) |> 
   dplyr::select(-quarter, -ntimes) |> 
   dplyr::group_by(year) |> 
   dplyr::transmute(ano = year,
-            mes = ifelse(year < 2021, seq(1:12), seq(1:3)),
+            mes = ifelse(year < lubridate::year(max(pib$date)), seq(1:12), seq(1:(lubridate::month(max(pib$date))))),
             dummy = gsub("1", "0", value)) |>
   dplyr::ungroup() |> 
   dplyr::select(-year) |> 
-  dplyr::transmute(data = seq(as.Date("1996/01/01"), by = "month", length.out = 303),
+  dplyr::transmute(data = seq(as.Date("1996/01/01"), by = "month", length.out = (3+abs(lubridate::month(leng.hp)))),
             dummy = gsub("-0", "1", dummy))
+}else{
+  codace <- as.data.frame(lapply(codace, rep, codace$ntimes)) |> 
+    dplyr::select(-quarter, -ntimes) |> 
+    dplyr::group_by(year) |> 
+    dplyr::transmute(ano = year,
+                     mes = seq(1:12),
+                     dummy = gsub("1", "0", value)) |>
+    dplyr::ungroup() |> 
+    dplyr::select(-year) |> 
+    dplyr::transmute(data = seq(as.Date("1996/01/01"), by = "month", length.out = lubridate::month(leng.hp)),
+                     dummy = gsub("-0", "1", dummy)) 
+}
 
 codace$dummy <- as.numeric(codace$dummy)
 
