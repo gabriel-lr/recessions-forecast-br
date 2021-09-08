@@ -210,7 +210,7 @@ codace <- as.data.frame(lapply(codace, rep, codace$ntimes)) |>
                      dummy = gsub("-0", "1", dummy)) 
 }
 
-codace$dummy <- as.numeric(codace$dummy)
+codace$dummy <- as.factor(codace$dummy)
 
 rm(pib)
 
