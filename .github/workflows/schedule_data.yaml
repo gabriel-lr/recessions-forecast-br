@@ -1,7 +1,9 @@
 name: data-generate
 
 # Controls when the action will run.
-on: [push]
+on:  
+  schedule:
+    - cron: "0 0 1 * *"
 
 jobs: 
   generate-data:
@@ -29,6 +31,7 @@ jobs:
          R -e 'install.packages("jsonlite")'
          R -e 'install.packages("httr")'
          R -e 'install.packages("dplyr")'
+         R -e 'install.packages("lubridate")'
 
     # Run R script
     - name: Data-Pipe
