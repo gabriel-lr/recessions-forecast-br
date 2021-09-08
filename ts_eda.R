@@ -36,6 +36,33 @@ pmiss.dm <- plot.miss(dummy)
 cowplot::plot_grid(pmiss.il, pmiss.tcb, pmiss.fz, pmiss.ib, pmiss.swap, pmiss.dm,
                    ncol = 3, nrow = 2)
 
+# Correlation
+my_data |>
+  select(-data, -dummy) |>
+  drop_na() |> 
+  cor() |> 
+  corrplot::corrplot(method = 'color', order = 'alphabet')
+
+## Analise TS
+
+# Transformar em TS
+xts_data <- xts(my_data[,-1], order.by = my_data$data)
+
+# Acf
+
+# Checar tendência, sazonalidade e ciclicidade
+decompose(xts_data[,2]) |> 
+  plot()
+
+#sazon != cicl.
+plot(aggregate(my_data,FUN=mean))
+
+# Estacionariedade
+ts_data |> 
+  tseries::adf.test()
+
+## Caso não sejam estacionárias plotar em log abaixo
+
 #Falta qqplot e histograma, botar o histograma dividindo tela
 #swap
 swap.qq <- qplot(sample = swap, data = my_data)+
@@ -95,29 +122,8 @@ kbl(booktabs = T, caption = "Teste Shapiro-Walk") |>
   kable_styling(latex_options = c("striped", "hold_position"),
                 full_width = F)
 
-# Correlation
-my_data |>
-  select(-data, -dummy) |>
-  drop_na() |> 
-  cor() |> 
-corrplot::corrplot(method = 'color', order = 'alphabet')
 
 
-## Analise TS
 
-# Transformar em TS
-xts_data <- xts(my_data[,-1], order.by = my_data$data)
 
-# Acf
-
-# Checar tendência, sazonalidade e ciclicidade
-decompose(xts_data[,2]) |> 
-  plot()
-
-#sazon != cicl.
-plot(aggregate(my_data,FUN=mean))
-
-# Estacionariedade
-ts_data |> 
-tseries::adf.test()
 
