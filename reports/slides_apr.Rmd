@@ -1,0 +1,176 @@
+---
+title: "Apresentação 2 Projeto"
+subtitle: "PPGEco Ufes"
+author: "Gabriel Lopes Rodrigues"
+institute: "Orientador: Guilherme Armando Pereira"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+```
+
+
+
+---
+class: center, middle
+
+# Forecasting Brazilian Recessions
+
+### Gabriel Lopes Rodrigues
+
+---
+# Contextualização da Pesquisa
+
+## - Objetivo Geral:
+
+### Previsão de recessão na Economia Brasileira
+
+## - Objetivos Específicos:
+
+### Implementar os 4 modelos probit (ver Kauppi Saikkonen 2008) - Estático, Dinâmico, Autoregressivo e Autoregressivo Dinâmico.
+
+### Avaliar a eficiência destes modelos p/ economia BR;
+
+### Aplicar metodologia de seleção de variáveis e ver o ganho preditivo.
+
+---
+class: center
+# Fluxo da Pesquisa
+
+.pull-left[
+### Modelos de risk Factors:
+
+- Revisão Bibliográfica
+
+- Fundamentação Teórica dos Dados
+
+- Coleta de Dados
+
+- Fundamentação dos Modelos
+
+- Implementação dos Modelos
+]
+
+.pull-right[
+### Modelos de Big Data:
+
+- Revisão Bibliográfica
+
+- Fundamentação do método de seleção
+
+- Implementação dos métodos
+
+- Análise dos resultados.
+]
+
+```{r echo = FALSE}
+# falta colocar umas marcacoes que digam o que já foi feito
+```
+
+---
+
+# Variáveis Explicativas Brasil
+
+```{r echo = FALSE}
+#colocar a tabela com as variáveis
+```
+
+---
+# Datação de Recessões
+
+```{r echo = FALSE}
+# mosta tabelas com datas Harding Pagan e Codace e falar um pouco sobre os métodos
+```
+
+
+---
+
+# Taxa Swap 360
+
+```{r echo = FALSE}
+# plotar gráfico da série crua e falar da fundamentação
+
+```
+
+
+---
+
+# Ibovespa
+
+```{r echo = FALSE}
+# plotar gráfico da série crua e falar da fundamentação
+
+```
+
+
+---
+
+# Índice de Liquidez
+
+```{r echo = FALSE}
+
+# plotar gráfico da série crua e falar da fundamentação
+
+```
+
+
+---
+
+# Fipezap
+
+```{r echo = FALSE}
+
+#plotar gráfico da série crua e falar da fundamentação
+
+```
+
+---
+
+# Índice de Deterioração Macroeconômica
+
+- Explicar a metodologia de cálculo em latex
+- colocar uma tabela com as váriaveis selecionadas, contrastando com o Ng(2010)
+
+---
+
+# Índice de Deterioração Macroeconômica
+
+```{r echo = FALSE}
+
+#mostra o indice e plotar contra as recessões
+
+```
+
+---
+
+# Análise Exploratória dos Dados
+
+- Mostar as análises estátisticas dos dados garimpados
+
+---
+
+# Implementação Prévia
+
+- plotar e mostrar a estimação dos modelos, analisar os resultados, ver se concorda com ng
+      
+---
+
+# Reprodutibilidade
+
+- botar link do github e explicar a reprodutibilidade do trabalho e da apresentação
+
+---
+
+class: center, middle
+
+# Agradecimentos
