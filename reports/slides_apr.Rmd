@@ -31,24 +31,24 @@ class: center, middle
 ---
 # Contextualização da Pesquisa
 
-## - Objetivo Geral:
+## Objetivo Geral:
 
-### Previsão de recessão na Economia Brasileira
+- Previsão de recessão na Economia Brasileira
 
-## - Objetivos Específicos:
+## Objetivos Específicos:
 
-### Implementar os 4 modelos probit (ver Kauppi Saikkonen 2008) - Estático, Dinâmico, Autoregressivo e Autoregressivo Dinâmico.
+- Implementar os 4 modelos probit (ver Kauppi Saikkonen 2008) - Estático, Dinâmico, Autoregressivo e Autoregressivo Dinâmico.
 
-### Avaliar a eficiência destes modelos p/ economia BR;
+- Avaliar a eficiência destes modelos p/ economia BR;
 
-### Aplicar metodologia de seleção de variáveis e ver o ganho preditivo.
+- Aplicar metodologia de seleção de variáveis e ver o ganho preditivo.
 
 ---
 class: center
 # Fluxo da Pesquisa
 
 .pull-left[
-### Modelos de risk Factors:
+### Modelos de Risk Factors:
 
 - Revisão Bibliográfica
 
@@ -81,8 +81,10 @@ class: center
 
 # Variáveis Explicativas Brasil
 
-```{r echo = FALSE}
-#colocar a tabela com as variáveis
+```{r echo = FALSE, code=xfun::read_utf8('summary_tbl.R')}}
+# Tabela
+source("summary_tbl.R", local = knitr::knit_global())
+  
 ```
 
 ---
