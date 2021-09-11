@@ -81,9 +81,12 @@ class: center
 
 # Variáveis Explicativas Brasil
 
-```{r echo = FALSE, code=xfun::read_utf8('summary_tbl.R')}}
+```{r, code=xfun::read_utf8('summary_tbl.R')}
 # Tabela
-source("summary_tbl.R", local = knitr::knit_global())
+fonte_tbl |> 
+  gt::tab_header(
+    title = "Variáveis do Modelo",
+  )
   
 ```
 
