@@ -1,5 +1,5 @@
 # Tabela
-my_data <- readRDS("my_data.rds")
+
 
 
 st.date <- function(x){

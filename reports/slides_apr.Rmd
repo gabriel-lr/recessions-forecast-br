@@ -113,7 +113,7 @@ source("summary_tbl.R")
 - Datação definida por assembléia baseada em metodologia plural
 ]
 ```{r tabela datação, echo = FALSE}
-source("recessao_tbl.R")
+
 ```
 
 
