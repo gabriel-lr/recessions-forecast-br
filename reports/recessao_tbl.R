@@ -1,7 +1,7 @@
 # Harding Pagan vs CODACE
 
 # Coleta e tratamento de dados
-pib <- sidrar::get_sidra(api = "/t/1621/n1/all/v/all/p/all/c11255/90707/d/v584%202") |> 
+pib <- sidrar::get_sidra(api = "/t/1621/n1/all/v/all/p/all/c11255/90707/d/v584%202") 
   
 pib <- pib |> 
   dplyr::select("date" = `Trimestre (Código)`, "value" = `Valor`)  |> 
