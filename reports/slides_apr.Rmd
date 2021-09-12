@@ -88,7 +88,10 @@ class: center
 ```{r tabela fontes,  echo = FALSE}
 # Tabela
 source("summary_tbl.R", local = knitr::knit_global())
-
+fonte_tbl |> 
+  gt::tab_header(
+    title = "Variáveis do Modelo",
+  )
 ```
 
 ---
