@@ -85,9 +85,9 @@ class: center
 
 # Variáveis Explicativas Brasil
 
-```{r tabela fontes, echo = FALSE, warnings = FALSE}
+```{r tabela fontes,  echo = FALSE}
 # Tabela
-source("summary_tbl.R")
+source("summary_tbl.R", local = knitr::knit_global())
 
 ```
 
