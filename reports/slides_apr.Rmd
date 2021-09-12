@@ -21,7 +21,7 @@ options(htmltools.dir.version = FALSE)
 ```
 
 ```{r echo = FALSE}
-
+my_data <- readRDS("my_data.rds")
 ```
 
 
@@ -96,7 +96,7 @@ class: center
 .pull-left[
 ## Harding & Pagan
 - Dissecting the cycle: a methodological investigation (2002)
-
+- Falar um pouco sobre a metodologia, talvez colocar a equação do algoritmo
 
 
 ]
@@ -118,7 +118,16 @@ class: center
 
 ---
 
-# Taxa Swap 360
+# Expectativas do Mercado Financeiro
+
+- Curva de Juros é a principal variável explicativa na literatura de recessão (ver...);
+
+- Reflete a preferência por liquidez dos agentes econômicos - diferencial do juro de curto prazo frente o juro de longo prazo.
+
+- Literatura americana utiliza o Yield Spread;
+
+- Para o Brasil o principal equivalente é reportado como a **Tx. Swap DI Pré Fixada** (ver ...);
+
 
 ```{r echo = FALSE}
 # plotar gráfico da série crua e falar da fundamentação
@@ -128,7 +137,15 @@ class: center
 
 ---
 
-# Ibovespa
+# Risco de Liquidez
+
+- A métrica utilizada é o spread entre a tx. de juro no mercado interbancário e os títulos públicos.
+
+-  O equivalente para o Brasil seria naturalmente o spread entre a *taxa Selic Over* e a *Taxa CDI*, contudo **fulano** demonstra não aderência do spread ao ciclo.
+
+- **fulanos** endossam a utilização do **Índice de Liquidez (IL)** do Banco Central como proxy adequada.
+
+- O **IL** relaciona o volume de ativos líquidos detidos pelas instituições com o fluxo de caixa estressado.
 
 ```{r echo = FALSE}
 # plotar gráfico da série crua e falar da fundamentação
@@ -138,7 +155,25 @@ class: center
 
 ---
 
-# Índice de Liquidez
+# Risco de Estouro de Bolhas
+
+.pull-left[
+## Ibovespa
+
+- Capta a desvalorização das empresas no mercado de ações;
+
+- **Fulano** confirma a correlação entre Ibovespa e Recessão.
+
+]
+
+.pull-right[
+## Fipezap
+
+- Capta a desvalorização de imóveis, lastro fundamental das dívidas familiares;
+
+- Para a economia brasileir **fulano** ressalta a relação....
+
+]
 
 ```{r echo = FALSE}
 
@@ -149,19 +184,20 @@ class: center
 
 ---
 
-# Fipezap
-
-```{r echo = FALSE}
-
-#plotar gráfico da série crua e falar da fundamentação
-
-```
-
----
 
 # Índice de Deterioração Macroeconômica
 
-- Explicar a metodologia de cálculo em latex
+- The Conference Board (**TCB**);
+
+- Metodologia Índice Composto Séries Coincidentes;
+
+$$x_{t}=200\ast \frac{X_{t} - X_{t-1}}{X_{t} + X_{t-1}}$$
+
+$k=\sum_{x}\frac{1}{\nu _{x}}$ 
+$i_{t}=\sum _{x}m_{t}$
+
+$$I_{t}=\frac{200+i_{t}}{200-i_{t}}I_{t-1}$$
+
 - colocar uma tabela com as váriaveis selecionadas, contrastando com o Ng(2010)
 
 ---
