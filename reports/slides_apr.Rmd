@@ -113,6 +113,22 @@ source("summary_tbl.R", local = knitr::knit_global())
 - Datação definida por assembléia baseada em metodologia plural
 ]
 ```{r tabela datação, echo = FALSE}
+source("recessao_tbl.R", local = knitr::knit_global())
+rec_tbl |> 
+  gt::tab_header(
+    title = "Variáveis do Modelo",
+  ) |> 
+  gt::tab_spanner(
+    label = "Harding & Pagan (2002)",
+    columns = c(Peaks, Troughs, Duration)
+  ) |> 
+  gt::tab_spanner(
+    label = "Codace (2020)",
+    columns = c(Picos, Vales, Duracao)
+  ) |> 
+  gt::tab_source_note(
+    source_note = "Fonte: Elaboração Própria"
+  )
 
 ```
 
