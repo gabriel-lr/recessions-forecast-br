@@ -7,6 +7,7 @@ date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
   xaringan::moon_reader:
     lib_dir: libs
+    css:: ninjutsu
     nature:
       highlightStyle: github
       highlightLines: true
@@ -20,8 +21,24 @@ options(htmltools.dir.version = FALSE)
 
 ```
 
+
 ```{r echo = FALSE}
+
 my_data <- readRDS("my_data.rds")
+```
+
+```{css echo=FALSE}
+.pull-left {
+  float: left;
+  width: 44%;
+}
+.pull-right {
+  float: right;
+  width: 44%;
+}
+.pull-right ~ p {
+  clear: both;
+}
 ```
 
 
@@ -85,7 +102,7 @@ class: center
 
 # Variáveis Explicativas Brasil
 
-```{r tabela fontes,  echo = FALSE}
+```{r tabela fontes,  echo = FALSE, fig.height=3, fig.width=7}
 # Tabela
 source("summary_tbl.R", local = knitr::knit_global())
 fonte_tbl |> 
@@ -100,8 +117,8 @@ fonte_tbl |>
 .pull-left[
 ## Harding & Pagan
 - Dissecting the cycle: a methodological investigation (2002)
-- Falar um pouco sobre a metodologia, talvez colocar a equação do algoritmo
 
+- Falar um pouco sobre a metodologia, talvez colocar a equação do algoritmo
 
 ]
 
@@ -109,14 +126,15 @@ fonte_tbl |>
 ## CODACE
 - Relatórios de frequência trimestral.
 
-
 - Segue a metodologia do National Bureau of Economic Research (NBER)
-
-
-- Datação definida por assembléia baseada em metodologia plural
 ]
-```{r tabela datação, echo = FALSE}
+```{r tabela datação, echo = FALSE, message = FALSE, results='hide'}
 source("recessao_tbl.R", local = knitr::knit_global())
+
+
+```
+
+```{r, echo = FALSE}
 rec_tbl |> 
   gt::tab_header(
     title = "Variáveis do Modelo",
@@ -132,9 +150,7 @@ rec_tbl |>
   gt::tab_source_note(
     source_note = "Fonte: Elaboração Própria"
   )
-
 ```
-
 
 ---
 
@@ -149,9 +165,28 @@ rec_tbl |>
 - Para o Brasil o principal equivalente é reportado como a **Tx. Swap DI Pré Fixada** (ver ...);
 
 
-```{r echo = FALSE}
+```{r echo = FALSE, out.width='95%', out.height='40%'}
 # plotar gráfico da série crua e falar da fundamentação
+library(ggplot2)
+df.plot <- my_data
 
+## Swap
+
+swap.plot <- df.plot |>
+  dplyr::select(data, swap, dummy) |> 
+  tidyr::drop_na()
+
+p <- ggplot(swap.plot,
+            aes(x = data, y = log(swap)))+
+  geom_line(size = 0.7)+
+  geom_ribbon(aes(x = data,
+                  ymax = ifelse(dummy == 1, max(log(swap)),min(log(swap))), 
+                  ymin = min(log(swap)), 
+                  alpha=0.5))+
+  ggtitle("Tx. Swap DI/Pré Fixada 360 dias")+
+  ggplot2::xlab("Ano") + ggplot2::ylab("Index")
+
+plotly::ggplotly(p)
 ```
 
 
@@ -159,6 +194,7 @@ rec_tbl |>
 
 # Risco de Liquidez
 
+.pull-left[
 - A métrica utilizada é o spread entre a tx. de juro no mercado interbancário e os títulos públicos.
 
 -  O equivalente para o Brasil seria naturalmente o spread entre a *taxa Selic Over* e a *Taxa CDI*, contudo **fulano** demonstra não aderência do spread ao ciclo.
@@ -166,12 +202,29 @@ rec_tbl |>
 - **fulanos** endossam a utilização do **Índice de Liquidez (IL)** do Banco Central como proxy adequada.
 
 - O **IL** relaciona o volume de ativos líquidos detidos pelas instituições com o fluxo de caixa estressado.
-
-```{r echo = FALSE}
+]
+.pull-right[
+```{r echo = FALSE, out.width='99%'}
 # plotar gráfico da série crua e falar da fundamentação
+## Indice de Liquidez
+il.plot <- df.plot |>
+  dplyr::select(data, il, dummy) |> 
+  tidyr::drop_na()
 
+il.plot$il <- log(il.plot$il)
+p <- ggplot(il.plot,
+            aes(x = data, y = il))+
+  geom_line(size = 0.7)+
+  geom_ribbon(aes(x = data,
+                  ymax = ifelse(dummy == 1, max(il),min(il)), 
+                  ymin = min(il), 
+                  alpha=0.5))+
+  ggtitle("Índice de Liquidez")+
+  ggplot2::xlab("Ano") + ggplot2::ylab("Index")
+
+plotly::ggplotly(p)
 ```
-
+]
 
 ---
 
@@ -194,13 +247,52 @@ rec_tbl |>
 - Para a economia brasileir **fulano** ressalta a relação....
 
 ]
+.pull-left[
+```{r echo = FALSE, fig.height=3, fig.width=5}
+## Ibovespa
+ibov.plot <- df.plot |>
+  dplyr::select(data, ibov, dummy) |> 
+  tidyr::drop_na()
 
-```{r echo = FALSE}
+p <- ggplot(ibov.plot,
+            aes(x = data, y = ibov))+
+  geom_line(size = 0.7)+
+  geom_ribbon(aes(x = data,
+                  ymax = ifelse(dummy == 1, max(ibov),min(ibov)), 
+                  ymin = min(ibov), 
+                  alpha=0.5))+
+  ggtitle("Índice IBOVESPA")+
+  ggplot2::xlab("Ano") + ggplot2::ylab("Index")
 
-# plotar gráfico da série crua e falar da fundamentação
+plotly::ggplotly(p)
+
+
 
 ```
+]
+.pull-right[
+```{r echo = FALSE, fig.height=3, fig.width=5}
+ ## FIPEZAP
 
+fp.plot <- df.plot |>
+  dplyr::select(data, fipezap, dummy) |> 
+  tidyr::drop_na()
+
+
+p <- ggplot(fp.plot,
+            aes(x = data, y = log(fipezap)))+
+  geom_line(size = 0.7)+
+  geom_ribbon(aes(x = data,
+                  ymax = ifelse(dummy == 1, max(log(fipezap)),min(log(fipezap))), 
+                  ymin = min(log(fipezap)), 
+                  alpha=0.5))+
+  ggtitle("Índice Fipezap")+
+  ggplot2::xlab("Ano") + ggplot2::ylab("Index")
+
+plotly::ggplotly(p)
+
+```
+]
 
 ---
 
@@ -224,9 +316,27 @@ $$I_{t}=\frac{200+i_{t}}{200-i_{t}}I_{t-1}$$
 
 # Índice de Deterioração Macroeconômica
 
-```{r echo = FALSE}
-
+```{r echo = FALSE, fig.height=5, fig.width=10}
 #mostra o indice e plotar contra as recessões
+## Indice Deterioração Macro
+
+tcb.plot <- df.plot |>
+  dplyr::select(data, tcb, dummy) |> 
+  tidyr::drop_na()
+
+tcb.plot$tcb <- log(tcb.plot$tcb)
+p <- ggplot(tcb.plot,
+       aes(x = data, y = tcb))+
+  geom_line(size = 0.7)+
+  geom_ribbon(aes(x = data,
+                  ymax = ifelse(dummy == 1, max(tcb),min(tcb)), 
+                  ymin = min(tcb), 
+                  alpha=0.5))+
+  ggtitle("Índice de Deterioração Macroeconômica")+
+  ggplot2::xlab("Ano") + ggplot2::ylab("Index")
+  
+plotly::ggplotly(p)
+
 
 ```
 
@@ -236,12 +346,192 @@ $$I_{t}=\frac{200+i_{t}}{200-i_{t}}I_{t-1}$$
 
 - Mostar as análises estátisticas dos dados garimpados
 
+```{r echo=FALSE, message=FALSE, fig.height=3, fig.width=1}
+# Análise Exploratória
+library(tidyverse)
+library(xts)
+library(forecast)
+library(kableExtra)
+# Estatísticas Descritivas
+  my_data |> 
+  dlookr::describe() |> 
+    select(-c(10:26)) |> 
+kbl(booktabs = T, caption = "Estatísticas Descritivas", 
+    format = "html", table.attr = "style='width:50%'") |> 
+  kable_styling(latex_options = c("striped", "hold_position"),
+                full_width = F)
+```
+
 ---
 
-# Implementação Prévia
 
-- plotar e mostrar a estimação dos modelos, analisar os resultados, ver se concorda com ng
-      
+.pull-right[
+## Matriz de Correlação
+```{r echo = FALSE, fig.height=5, fig.width=5}
+# Correlation
+my_data |>
+  select(-data, -dummy) |>
+  drop_na() |> 
+  cor() |> 
+  corrplot::corrplot(method = 'color', number.digits = 2, addCoef.col = 'white', 
+                     sig.level = 0.05) #colocar numeros
+
+```
+]
+
+.pull-left[
+## Teste de normalidade
+```{r echo = FALSE, fig.height=5, fig.width=5}
+
+# Normality
+my_data |> 
+dlookr::normality() |> 
+kbl(booktabs = T, caption = "Teste Shapiro-Walk") |> 
+  kable_styling(latex_options = c("striped", "hold_position"),
+                full_width = F)
+```
+]
+
+---
+
+
+```{r pre model, echo = FALSE, message=FALSE, warning=FALSE}
+# Rodando Modelo!!
+
+library(tidyverse)
+library(EWS)
+library(glmnet)
+
+
+# Merge nos dados
+
+df.train <- my_data |> 
+  drop_na()
+
+
+attach(df.train)
+
+# Definindo Variaveis
+
+trainy <- as.vector(dummy)
+trainx <- df.train |> 
+  select(-data,-dummy) |> 
+  as.matrix()
+
+```
+
+### Modelo Estático
+
+```{r model 1, echo = FALSE, message=FALSE, warning=FALSE}
+# Modelo Estatico
+estat <- Logistic_Estimation(Dicho_Y = trainy, Exp_X = trainx, Intercept = TRUE,
+                             Nb_Id = 1, Lag = 1, type_model = 1)
+estat$Estimation
+```
+
+### Modelo Dinâmico
+
+```{r model 2, echo = FALSE, message=FALSE, warning=FALSE}
+# Dynamic Model lag Binaria
+dyn_bin <- Logistic_Estimation(Dicho_Y = trainy, Exp_X = trainx, Intercept = TRUE,
+                               Nb_Id = 1, Lag = 1, type_model = 2)
+
+dyn_bin$Estimation
+```
+
+---
+
+### Modelo Autoregressivo
+
+```{r model 3, echo = FALSE, message=FALSE, warning=FALSE}
+# Dynamic Model lag index (Autoregressivo?)
+dyn_ind <- Logistic_Estimation(Dicho_Y = trainy, Exp_X = trainx, Intercept = TRUE,
+                               Nb_Id = 1, Lag = 1, type_model = 3)
+dyn_ind$Estimation
+```
+
+### Modelo Dinâmico Autoregressivo
+
+```{r model 4, echo = FALSE, message=FALSE, warning=FALSE}
+# Dinamico Autoregressivo
+dyn_aut <- Logistic_Estimation(Dicho_Y = trainy, Exp_X = trainx, Intercept = TRUE,
+                               Nb_Id = 1, Lag = 1, type_model = 4)
+dyn_aut$Estimation
+```
+   
+---
+### Estático
+.pull-left[
+```{r plot.model1, echo = FALSE}
+# Plot Modelos
+
+x1_range <- df.train$data
+plot(x1_range[-1], trainy[-1], 
+     ylim=c(0,1),
+     pch = "+", 
+     xlab="Data", ylab="Resultado", main="Probabilidade")
+# Add line para modelo estat
+lines(x1_range[-1], estat$prob, 
+      type="l", 
+      col="blue")
+# add a horizontal line at p=.5
+abline(h=.5, lty=2)
+```
+]
+.pull-right[
+### Dinâmico
+```{r plot.model2, echo = FALSE}
+x1_range <- df.train$data
+plot(x1_range[-1], trainy[-1], 
+     ylim=c(0,1),
+     pch = "+", 
+     xlab="Data", ylab="Resultado", main="Probabilidade")
+# Add line para modelo dyn bin
+lines(x1_range[-1], dyn_bin$prob, 
+      type="l", 
+      lwd=2,
+      col="turquoise2")
+# add a horizontal line at p=.5
+abline(h=.5, lty=2)
+```
+]
+
+---
+.pull-left[
+### Autoregressivo
+```{r plot.model3, echo = FALSE}
+x1_range <- df.train$data
+plot(x1_range[-1], trainy[-1], 
+     ylim=c(0,1),
+     pch = "+", 
+     xlab="Data", ylab="Resultado", main="Probabilidade")
+# Add line modelo dyn ind
+lines(x1_range[-1], dyn_ind$prob, 
+      type="l", 
+      lwd=2, 
+      col="orangered")
+# add a horizontal line at p=.5
+abline(h=.5, lty=2)
+```
+]
+.pull-right[
+### Dinâmico Autoregressivo
+```{r plot.model4, echo = FALSE}
+x1_range <- df.train$data
+plot(x1_range[-1], trainy[-1], 
+     ylim=c(0,1),
+     pch = "+", 
+     xlab="Data", ylab="Resultado", main="Probabilidade")
+# Add line modelo dyn aut
+lines(x1_range[-1], dyn_aut$prob, 
+      type="l", 
+      lwd=2, 
+      col="green")
+# add a horizontal line at p=.5
+abline(h=.5, lty=2)
+```
+]
+   
 ---
 
 # Reprodutibilidade
