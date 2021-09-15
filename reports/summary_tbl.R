@@ -59,9 +59,9 @@ fonte_tbl <- dplyr::left_join(start.date, num.obs, by = "Ap.") |>
                               Fonte = nomes.fonte) |> 
                 dplyr::relocate(Serie, .before = "Ap.")
 
-fonte_tbl <- gt::gt(fonte_tbl) 
   
 fonte_tbl |> 
+  gt::gt() |> 
   gt::tab_header(
     title = "Variáveis do Modelo",
   )

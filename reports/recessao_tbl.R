@@ -30,10 +30,10 @@ rec_tbl <- a |>
                           "4º Trimestre 2016",
                           "Sem data de término"),
                 Duracao = (c("3", "2", "2", "11", "-")))
-
-rec_tbl <- gt::gt(rec_tbl) 
+ 
 
 rec_tbl |> 
+  gt::gt() |> 
   gt::tab_header(
     title = "Variáveis do Modelo",
   ) |> 

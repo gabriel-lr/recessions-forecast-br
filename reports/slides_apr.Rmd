@@ -106,9 +106,10 @@ class: center
 # Tabela
 source("summary_tbl.R", local = knitr::knit_global())
 fonte_tbl |> 
-  gt::tab_header(
-    title = "Variáveis do Modelo",
-  )
+kbl(booktabs = T, caption = "Séries Temporais", 
+    format = "html") |> 
+  kable_paper(full_width = F) |> 
+    footnote("Elaboração Própria", footnote_as_chunk = T)
 ```
 
 ---
@@ -136,20 +137,11 @@ source("recessao_tbl.R", local = knitr::knit_global())
 
 ```{r, echo = FALSE}
 rec_tbl |> 
-  gt::tab_header(
-    title = "Variáveis do Modelo",
-  ) |> 
-  gt::tab_spanner(
-    label = "Harding & Pagan (2002)",
-    columns = c(Peaks, Troughs, Duration)
-  ) |> 
-  gt::tab_spanner(
-    label = "Codace (2020)",
-    columns = c(Picos, Vales, Duracao)
-  ) |> 
-  gt::tab_source_note(
-    source_note = "Fonte: Elaboração Própria"
-  )
+  kbl(booktabs = T, caption = "Harding Pagan vs CODACE", 
+    format = "html") |> 
+  kable_paper(full_width = F) |> 
+    footnote("Elaboração Própria", footnote_as_chunk = T)
+
 ```
 
 ---
@@ -309,8 +301,94 @@ $k=\sum_{x}\frac{1}{\nu _{x}}$
 $i_{t}=\sum _{x}m_{t}$
 
 $$I_{t}=\frac{200+i_{t}}{200-i_{t}}I_{t-1}$$
+---
 
-- colocar uma tabela com as váriaveis selecionadas, contrastando com o Ng(2010)
+- colocar uma tabela com as váriaveis selecionadas.
+
+```{r tcb data, echo = FALSE}
+
+## API Request
+
+library(httr)
+library(jsonlite)
+library(tidyverse)
+
+
+##------Solicitando os dados via api-----------#
+
+# Fun??o
+## Posteriormente trabalhar a efici?ncia do c?digo, est? mto pesado.
+
+ipea.api <- function(cod, ap = ap){
+  require(httr)
+  require(jsonlite)
+  require(tidyverse)
+  res <- GET(paste("http://www.ipeadata.gov.br/api/odata4/ValoresSerie(SERCODIGO='",cod,"')", sep =""))
+  df <- fromJSON(rawToChar(res$content))
+  
+  ap <- df[[2]] |> 
+    select(VALDATA, VALVALOR)
+  return(ap)
+}
+
+
+# Códigos
+
+#IPEA API
+
+## Horas Trabalhadas Industria Dessaz: CNI12_HTRABD12
+## Exped Papel Ondulado QTD: ABPO12_PAPEL12
+## Prod Industria Geral Ind Base fix dessaz: PIMPFN12_QIIGSNAS12
+## Index conf. empresario industrial geral: CNI12_ICEIGER12
+## Indicador IPEA FBCF Const Civil Dessaz: GAC12_INDFBCFCCDESSAZ12
+## M1 Média Período: BM12_M1MN12
+## Ind. Expec Consumidor IEC: FCESP12_IICF12
+
+## Total Demissões
+### até 2019.12: CAGED12_DESLIG
+### a partir 2020.01: CAGED12_DESLIGN12
+
+tcb.cod <- c("CNI12_HTRABD12", "ABPO12_PAPEL12", "PIMPFN12_QIIGSNAS12", 
+         "CNI12_ICEIGER12", "GAC12_INDFBCFCCDESSAZ12", "BM12_M1MN12", 
+         "FCESP12_IICF12", "CAGED12_DESLIG", "CAGED12_DESLIGN12")
+
+nomes.tcb <- c("trab_ind", "exp_papel", "prod_ind", "icei", "fbcf_cc", "m1", 
+               "iec", "dem_desc", "dem_att")
+# Iterando
+df.tcb <- lapply(tcb.cod, ipea.api)
+
+# Renomeando listas
+
+for(i in 1:length(nomes.tcb)){
+colnames(df.tcb[[i]])[2] <- nomes.tcb[i]
+}
+
+# Unlist Joint
+
+df.tcb <- df.tcb |> 
+  reduce(full_join, by = "VALDATA") |>
+  rename(data = VALDATA) |> 
+  arrange(data)
+
+# Organizando datas
+
+df.tcb$data <- str_remove(df.tcb$data, pattern = "T.*$") |> 
+  as.Date(format = "%Y-%m-%d")
+
+
+```
+
+```{r tcb tbl, echo = FALSE}
+source("tcb_tbl.R", local = knitr::knit_global())
+
+tcb_tbl |> 
+  kbl(booktabs = T, caption = "Indicadores Coincidentes de Atividade Econômica", 
+    format = "html") |> 
+  kable_paper(full_width = F) |> 
+    footnote("Elaboração Própria", footnote_as_chunk = T)
+
+```
+
 
 ---
 
@@ -357,9 +435,10 @@ library(kableExtra)
   dlookr::describe() |> 
     select(-c(10:26)) |> 
 kbl(booktabs = T, caption = "Estatísticas Descritivas", 
-    format = "html", table.attr = "style='width:50%'") |> 
-  kable_styling(latex_options = c("striped", "hold_position"),
-                full_width = F)
+    format = "html") |> 
+  kable_paper(full_width = F) |> 
+    footnote("Elaboração Própria", footnote_as_chunk = T)
+ 
 ```
 
 ---
