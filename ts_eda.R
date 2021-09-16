@@ -172,7 +172,7 @@ autoplot(acf(xts.fipezap, plot = FALSE))
 autoplot(pacf(xts.fipezap, plot = FALSE))
 tseries::adf.test(xts.fipezap, alternative="stationary", k=0)
 autoplot(xts.fipezap)
-autoplot(diff(xts.fipezap))
+autoplot(diff(xts.fipezap, lag = 2))
 
 ## tcb
 
@@ -209,4 +209,14 @@ ts.eda <- function(x){
 ts.eda("ibov")
 
 
+ndiffs(xts.swap)
+nsdiffs(xts.swap)
 
+ndiffs(xts.tcb)
+nsdiffs(xts.tcb)
+
+ndiffs(xts.il)
+nsdiffs(xts.il)
+
+ndiffs(xts.fipezap)
+nsdiffs(xts.fipezap)
