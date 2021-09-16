@@ -58,7 +58,7 @@ decompose(xts_data[,2]) |>
 plot(aggregate(my_data,FUN=mean))
 
 # Estacionariedade
-ts_data |> 
+xts_data |> 
   tseries::adf.test()
 
 ## Caso não sejam estacionárias plotar em log abaixo
@@ -121,9 +121,92 @@ dlookr::normality() |>
 kbl(booktabs = T, caption = "Teste Shapiro-Walk") |> 
   kable_styling(latex_options = c("striped", "hold_position"),
                 full_width = F)
+## teste adf
+st <- as.numeric(min(my_data$data))
+fin <- as.numeric(max(my_data$data))
+values <- my_data[,-1]
+
+ts.data <- ts(values, start = st, end = fin, frequency = 12)
+ts.data
+ts.data[,2] |>
+tseries::adf.test()
+
+## trablhando por série
 
 
+## swap
+xts.swap <- my_data |> 
+   select(swap) |> 
+        xts(order.by = my_data$data)
 
+xts.swap <- xts.swap[complete.cases(xts.swap[,1]),]
+
+autoplot(acf(xts.swap, plot = FALSE))
+autoplot(pacf(xts.swap, plot = FALSE))
+tseries::adf.test(xts.swap, alternative="stationary", k=0)
+autoplot(xts.swap)
+autoplot(diff(xts.swap))
+
+## il 
+xts.il <- my_data |> 
+  select(il) |> 
+  xts(order.by = my_data$data)
+
+xts.il <- xts.il[complete.cases(xts.il[,1]),]
+
+autoplot(acf(xts.il, plot = FALSE))
+autoplot(pacf(xts.il, plot = FALSE))
+tseries::adf.test(xts.il, alternative="stationary", k=0)
+autoplot(xts.il)
+autoplot(diff(xts.il))
+
+## fipezap
+
+xts.fipezap <- my_data |> 
+  select(fipezap) |> 
+  xts(order.by = my_data$data)
+
+xts.fipezap <- xts.fipezap[complete.cases(xts.fipezap[,1]),]
+
+autoplot(acf(xts.fipezap, plot = FALSE))
+autoplot(pacf(xts.fipezap, plot = FALSE))
+tseries::adf.test(xts.fipezap, alternative="stationary", k=0)
+autoplot(xts.fipezap)
+autoplot(diff(xts.fipezap))
+
+## tcb
+
+xts.tcb <- my_data |> 
+  select(tcb) |> 
+  xts(order.by = my_data$data)
+
+xts.tcb <- xts.tcb[complete.cases(xts.tcb[,1]),]
+
+autoplot(acf(xts.tcb, plot = FALSE))
+autoplot(pacf(xts.tcb, plot = FALSE))
+tseries::adf.test(xts.tcb, alternative="stationary", k=0)
+autoplot(xts.tcb)
+autoplot(diff(xts.tcb))
+
+
+## ibov com funcao
+
+ts.eda <- function(x){
+  xts.x <- my_data |> 
+    select(x) |> 
+    xts(order.by = my_data$data)
+  
+  xts.x <- xts.x[complete.cases(xts.x[,1]),]
+  
+  autoplot(acf(xts.x, plot = FALSE))
+  autoplot(pacf(xts.x, plot = FALSE))
+  tseries::adf.test(xts.x, alternative="stationary", k=0)
+  autoplot(xts.x)
+  autoplot(diff(xts.x))
+}
+
+
+ts.eda("ibov")
 
 
 

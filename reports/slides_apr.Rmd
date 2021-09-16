@@ -23,7 +23,7 @@ options(htmltools.dir.version = FALSE)
 
 
 ```{r echo = FALSE}
-
+library(kableExtra)
 my_data <- readRDS("my_data.rds")
 ```
 
