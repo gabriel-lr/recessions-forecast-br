@@ -163,11 +163,11 @@ swap.plot <- df.plot |>
   tidyr::drop_na()
 
 p <- ggplot(swap.plot,
-            aes(x = data, y = log(swap)))+
+            aes(x = data, y = swap))+
   geom_line(size = 0.7)+
   geom_ribbon(aes(x = data,
-                  ymax = ifelse(dummy == 1, max(log(swap)),min(log(swap))), 
-                  ymin = min(log(swap)), 
+                  ymax = ifelse(dummy == 1, max(swap),min(swap)), 
+                  ymin = min(swap), 
                   alpha=0.5))+
   ggtitle("Tx. Swap DI/Pré Fixada 360 dias")+
   ggplot2::xlab("Ano") + ggplot2::ylab("Index")
