@@ -23,7 +23,7 @@ Serão utilizados os 4 modelos probit proposto em Kauppi e Saikonen (2008) e té
 O script data-generate foi agendado para todo 1º dia do mês corrente inicializar o data_pipe.R e salvar os resultados dentro do arquivo "my_data.rds".
 Assim, o arquivo gerado trás a base de dados atualizada mensalmente.
 
-Basta importar o arquivo de dados para dentro dos scripts que desejar rodar a seguir.
+Basta importar o arquivo de dados para dentro dos scripts que desejar rodar em seguida.
 
 
 
