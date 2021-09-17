@@ -38,12 +38,12 @@ num.obs <- tidyr::gather(num.obs)|>
 
 #----------- Nome ------------###
 
-nomes.ofc <- c("Taxa referencial entre Swap e Pre Fixada de 360 dias",
-                   "Índice de acoes: Ibovespa - fechamento",
-                   "Precos - Indice FipeZap Imóveis Anunciados vendas no Brasil",
+nomes.ofc <- c("Taxa referencial Swap e Pre Fixada de 360 dias",
+                   "Indice de acoes: Ibovespa - fechamento",
+                   "Precos - Indice FipeZap Imoveis Anunciados vendas no Brasil",
                    "Indice de Liquidez do Sistema Bancario Nacional",
                    "Indice Composto de Deterioracao Macroeconomica",
-                   "Datacao de Recessoes (Harding & Pagan")
+                   "Datacao de Recessoes (Harding & Pagan)")
 
 #---------------- Fonte ---------------------#
 
