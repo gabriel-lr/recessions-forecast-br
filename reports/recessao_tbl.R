@@ -11,7 +11,7 @@ pib <- sidrar::get_sidra(api = "/t/1621/n1/all/v/all/p/all/c11255/90707/d/v584%2
 # Obter datação de ciclo de negócios
 bc_dates <- pib |> 
   timetk::tk_ts(select = value, start = c(1996, 1), frequency = 4) |> 
-  BCDating::BBQ(name = "Ciclo de Negócios do PIB do Brasil")
+  BCDating::BBQ(name = "Ciclo de Negocios do PIB do Brasil")
 
 # Exibir resultados
 a <- as.data.frame(show(bc_dates))
@@ -19,23 +19,23 @@ a <- as.data.frame(show(bc_dates))
 #---------- CODACE -----------#
 
 rec_tbl <- a |> 
-  dplyr::mutate(Picos = c("1º Trimestre 2001",
-                          "4º Trimestre 2002",
-                          "3º Trimestre 2008",
-                          "1º Trimestre 2014",
-                          "1º Trimestre 2020"),
-                Vales = c("4º Trimestre 2001",
-                          "2º Trimestre 2003",
-                          "1º Trimestre 2009",
-                          "4º Trimestre 2016",
-                          "Sem data de término"),
+  dplyr::mutate(Picos = c("1 Trimestre 2001",
+                          "4 Trimestre 2002",
+                          "3 Trimestre 2008",
+                          "1 Trimestre 2014",
+                          "1 Trimestre 2020"),
+                Vales = c("4 Trimestre 2001",
+                          "2 Trimestre 2003",
+                          "1 Trimestre 2009",
+                          "4 Trimestre 2016",
+                          "Sem data de termino"),
                 Duracao = (c("3", "2", "2", "11", "-")))
  
 
 rec_tbl |> 
   gt::gt() |> 
   gt::tab_header(
-    title = "Variáveis do Modelo",
+    title = "Variaveis do Modelo",
   ) |> 
   gt::tab_spanner(
     label = "Harding & Pagan (2002)",
@@ -46,5 +46,5 @@ rec_tbl |>
     columns = c(Picos, Vales, Duracao)
   ) |> 
   gt::tab_source_note(
-    source_note = "Fonte: Elaboração Própria"
+    source_note = "Fonte: Elaboracao Propria"
   )

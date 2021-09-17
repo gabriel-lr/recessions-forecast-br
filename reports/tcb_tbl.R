@@ -71,5 +71,5 @@ tcb_tbl <- dplyr::left_join(start.date, num.obs, by = "Ap.") |>
 tcb_tbl |> 
   gt::gt() |> 
   gt::tab_header(
-    title = "Indicadores Coincidentes de Atividade Econômica",
+    title = "Indicadores Coincidentes de Atividade Economica",
   )

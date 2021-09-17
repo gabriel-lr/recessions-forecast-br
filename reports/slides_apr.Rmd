@@ -27,20 +27,6 @@ library(kableExtra)
 my_data <- readRDS("my_data.rds")
 ```
 
-```{css echo=FALSE}
-.pull-left {
-  float: left;
-  width: 44%;
-}
-.pull-right {
-  float: right;
-  width: 44%;
-}
-.pull-right ~ p {
-  clear: both;
-}
-```
-
 
 ---
 class: center, middle
@@ -102,7 +88,7 @@ class: center
 
 # Variáveis Explicativas Brasil
 
-```{r tabela fontes,  echo = FALSE, fig.height=3, fig.width=7}
+```{r tabela fontes,  echo = FALSE, eval=TRUE, fig.height=3, fig.width=7}
 # Tabela
 source("summary_tbl.R", local = knitr::knit_global())
 fonte_tbl |> 
@@ -119,13 +105,10 @@ kbl(booktabs = T, caption = "Séries Temporais",
 ## Harding & Pagan
 - Dissecting the cycle: a methodological investigation (2002)
 
-- Falar um pouco sobre a metodologia, talvez colocar a equação do algoritmo
-
 ]
 
 .pull-right[
 ## CODACE
-- Relatórios de frequência trimestral.
 
 - Segue a metodologia do National Bureau of Economic Research (NBER)
 ]
@@ -137,10 +120,21 @@ source("recessao_tbl.R", local = knitr::knit_global())
 
 ```{r, echo = FALSE}
 rec_tbl |> 
-  kbl(booktabs = T, caption = "Harding Pagan vs CODACE", 
-    format = "html") |> 
-  kable_paper(full_width = F) |> 
-    footnote("Elaboração Própria", footnote_as_chunk = T)
+  gt::gt() |> 
+  gt::tab_header(
+    title = "Variaveis do Modelo",
+  ) |> 
+  gt::tab_spanner(
+    label = "Harding & Pagan (2002)",
+    columns = c(Peaks, Troughs, Duration)
+  ) |> 
+  gt::tab_spanner(
+    label = "Codace (2020)",
+    columns = c(Picos, Vales, Duracao)
+  ) |> 
+  gt::tab_source_note(
+    source_note = "Fonte: Elaboracao Propria"
+  )
 
 ```
 
@@ -293,18 +287,25 @@ plotly::ggplotly(p)
 
 - The Conference Board (**TCB**);
 
-- Metodologia Índice Composto Séries Coincidentes;
+#### Metodologia Índice Composto Séries Antecedentes dos Ciclos:
+
+- Cálculo média aritmética simétrica:
 
 $$x_{t}=200\ast \frac{X_{t} - X_{t-1}}{X_{t} + X_{t-1}}$$
+- Ponderação da volatilidade:
 
-$k=\sum_{x}\frac{1}{\nu _{x}}$ 
+.pull-left[
+$k=\sum_{x}\frac{1}{\nu _{x}}$
+]
+
+.pull-right[
 $i_{t}=\sum _{x}m_{t}$
+]
+
+- Formulação do Índice:
 
 $$I_{t}=\frac{200+i_{t}}{200-i_{t}}I_{t-1}$$
 ---
-
-- colocar uma tabela com as váriaveis selecionadas.
-
 ```{r tcb data, echo = FALSE}
 
 ## API Request
@@ -382,19 +383,14 @@ df.tcb$data <- str_remove(df.tcb$data, pattern = "T.*$") |>
 source("tcb_tbl.R", local = knitr::knit_global())
 
 tcb_tbl |> 
-  kbl(booktabs = T, caption = "Indicadores Coincidentes de Atividade Econômica", 
+  kbl(booktabs = T, caption = "Indicadores Antecedentes de Atividade Econômica", 
     format = "html") |> 
   kable_paper(full_width = F) |> 
     footnote("Elaboração Própria", footnote_as_chunk = T)
 
 ```
 
-
----
-
-# Índice de Deterioração Macroeconômica
-
-```{r echo = FALSE, fig.height=5, fig.width=10}
+```{r echo = FALSE, fig.height=3, fig.width=10}
 #mostra o indice e plotar contra as recessões
 ## Indice Deterioração Macro
 
@@ -442,9 +438,7 @@ kbl(booktabs = T, caption = "Estatísticas Descritivas",
 ```
 
 ---
-
-
-.pull-right[
+.pull-left[
 ## Matriz de Correlação
 ```{r echo = FALSE, fig.height=5, fig.width=5}
 # Correlation
@@ -457,8 +451,7 @@ my_data |>
 
 ```
 ]
-
-.pull-left[
+.pull-right[
 ## Teste de normalidade
 ```{r echo = FALSE, fig.height=5, fig.width=5}
 
@@ -501,47 +494,7 @@ trainx <- df.train |>
 
 ### Modelo Estático
 
-```{r model 1, echo = FALSE, message=FALSE, warning=FALSE}
-# Modelo Estatico
-estat <- Logistic_Estimation(Dicho_Y = trainy, Exp_X = trainx, Intercept = TRUE,
-                             Nb_Id = 1, Lag = 1, type_model = 1)
-estat$Estimation
-```
-
-### Modelo Dinâmico
-
-```{r model 2, echo = FALSE, message=FALSE, warning=FALSE}
-# Dynamic Model lag Binaria
-dyn_bin <- Logistic_Estimation(Dicho_Y = trainy, Exp_X = trainx, Intercept = TRUE,
-                               Nb_Id = 1, Lag = 1, type_model = 2)
-
-dyn_bin$Estimation
-```
-
----
-
-### Modelo Autoregressivo
-
-```{r model 3, echo = FALSE, message=FALSE, warning=FALSE}
-# Dynamic Model lag index (Autoregressivo?)
-dyn_ind <- Logistic_Estimation(Dicho_Y = trainy, Exp_X = trainx, Intercept = TRUE,
-                               Nb_Id = 1, Lag = 1, type_model = 3)
-dyn_ind$Estimation
-```
-
-### Modelo Dinâmico Autoregressivo
-
-```{r model 4, echo = FALSE, message=FALSE, warning=FALSE}
-# Dinamico Autoregressivo
-dyn_aut <- Logistic_Estimation(Dicho_Y = trainy, Exp_X = trainx, Intercept = TRUE,
-                               Nb_Id = 1, Lag = 1, type_model = 4)
-dyn_aut$Estimation
-```
-   
----
-### Estático
-.pull-left[
-```{r plot.model1, echo = FALSE}
+```{r plot.model1, echo = FALSE, fig.height=4, fig.width=10}
 # Plot Modelos
 
 x1_range <- df.train$data
@@ -556,10 +509,19 @@ lines(x1_range[-1], estat$prob,
 # add a horizontal line at p=.5
 abline(h=.5, lty=2)
 ```
-]
-.pull-right[
-### Dinâmico
-```{r plot.model2, echo = FALSE}
+
+
+```{r model 1, echo = FALSE, message=FALSE, warning=FALSE}
+# Modelo Estatico
+estat <- Logistic_Estimation(Dicho_Y = trainy, Exp_X = trainx, Intercept = TRUE,
+                             Nb_Id = 1, Lag = 1, type_model = 1)
+estat$Estimation
+```
+
+---
+### Modelo Dinâmico
+
+```{r plot.model2, echo = FALSE, fig.height=4, fig.width=10}
 x1_range <- df.train$data
 plot(x1_range[-1], trainy[-1], 
      ylim=c(0,1),
@@ -573,12 +535,21 @@ lines(x1_range[-1], dyn_bin$prob,
 # add a horizontal line at p=.5
 abline(h=.5, lty=2)
 ```
-]
+
+
+```{r model 2, echo = FALSE, message=FALSE, warning=FALSE}
+# Dynamic Model lag Binaria
+dyn_bin <- Logistic_Estimation(Dicho_Y = trainy, Exp_X = trainx, Intercept = TRUE,
+                               Nb_Id = 1, Lag = 1, type_model = 2)
+
+dyn_bin$Estimation
+```
 
 ---
-.pull-left[
-### Autoregressivo
-```{r plot.model3, echo = FALSE}
+
+### Modelo Autoregressivo
+
+```{r plot.model3, echo = FALSE, fig.height=4, fig.width=10}
 x1_range <- df.train$data
 plot(x1_range[-1], trainy[-1], 
      ylim=c(0,1),
@@ -592,10 +563,19 @@ lines(x1_range[-1], dyn_ind$prob,
 # add a horizontal line at p=.5
 abline(h=.5, lty=2)
 ```
-]
-.pull-right[
-### Dinâmico Autoregressivo
-```{r plot.model4, echo = FALSE}
+
+```{r model 3, echo = FALSE, message=FALSE, warning=FALSE}
+# Dynamic Model lag index (Autoregressivo?)
+dyn_ind <- Logistic_Estimation(Dicho_Y = trainy, Exp_X = trainx, Intercept = TRUE,
+                               Nb_Id = 1, Lag = 1, type_model = 3)
+dyn_ind$Estimation
+```
+
+---
+
+### Modelo Dinâmico Autoregressivo
+
+```{r plot.model4, echo = FALSE, fig.height=4, fig.width=10}
 x1_range <- df.train$data
 plot(x1_range[-1], trainy[-1], 
      ylim=c(0,1),
@@ -609,8 +589,15 @@ lines(x1_range[-1], dyn_aut$prob,
 # add a horizontal line at p=.5
 abline(h=.5, lty=2)
 ```
-]
-   
+  
+
+```{r model 4, echo = FALSE, message=FALSE, warning=FALSE}
+# Dinamico Autoregressivo
+dyn_aut <- Logistic_Estimation(Dicho_Y = trainy, Exp_X = trainx, Intercept = TRUE,
+                               Nb_Id = 1, Lag = 1, type_model = 4)
+dyn_aut$Estimation
+```
+
 ---
 
 # Reprodutibilidade

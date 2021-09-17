@@ -38,12 +38,12 @@ num.obs <- tidyr::gather(num.obs)|>
 
 #----------- Nome ------------###
 
-nomes.ofc <- c("Taxa referencial entre Swap e Pré Fixada de 360 dias",
-                   "Índice de ações: Ibovespa - fechamento",
-                   "Preços - Índice FipeZap Imóveis Anunciados vendas no Brasil",
-                   "Índice de Liquidez do Sistema Bancário Nacional",
-                   "Índice Composto de Deterioração Macroeconomica",
-                   "Datação de Recessões (Harding & Pagan")
+nomes.ofc <- c("Taxa referencial entre Swap e Pre Fixada de 360 dias",
+                   "Índice de acoes: Ibovespa - fechamento",
+                   "Precos - Indice FipeZap Imóveis Anunciados vendas no Brasil",
+                   "Indice de Liquidez do Sistema Bancario Nacional",
+                   "Indice Composto de Deterioracao Macroeconomica",
+                   "Datacao de Recessoes (Harding & Pagan")
 
 #---------------- Fonte ---------------------#
 
@@ -51,7 +51,7 @@ nomes.fonte <- c("IPEA",
                 "IPEA",
                 "IPEA",
                 "SGS BACEN",
-                "Formulação Própria",
+                "Metodologia TCB",
                 "CODACE")
 
 fonte_tbl <- dplyr::left_join(start.date, num.obs, by = "Ap.") |> 
@@ -63,7 +63,7 @@ fonte_tbl <- dplyr::left_join(start.date, num.obs, by = "Ap.") |>
 fonte_tbl |> 
   gt::gt() |> 
   gt::tab_header(
-    title = "Variáveis do Modelo",
+    title = "Variaveis do Modelo",
   )
   
 
