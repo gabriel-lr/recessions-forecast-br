@@ -1,0 +1,30 @@
+---
+title: "Resenha Datação de Recessão"
+author: "Gabriel Lopes Rodrigues"
+date: "20/09/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Datação de Recessões
+
+A variável dependente será a dummy da datação de ciclos na economia brasileira disponibilizada pelo Comitê de Datação de Ciclos Econômicos – CODACE. A datação inicia-se no primeiro trimestre de 1980 e continua até a presente data, divulgando relatório com frequência trimestral. Segue o método do National Bureau of Economic Research (NBER), fornecendo a data de início, término e extensão das recessões. A principal variável é o Produto Interno Bruto (PIB) trimestral, à preços de mercado dessazonalizado. (CODACE 2009) 
+Para além da Datação do CODACE há a datação direta via algoritmo de Harding & Pagan (2002) que apesar de não apresentar a mesma metodologia do NBER e CODACE fornece o resultado semelhante para o período. Como o CODACE define a cronologia dos ciclos de negócios baseados em reuniões do seu conselho de membros há certa defasagem temporal quanto a peridiocidade de emissão das atualizações se comparado ao cálculo direto via algoritmo.
+
+Disto isto, à priori será realizado o cálculo da dummy via Harding & Pagan (2002), ademais para alinhar as frequências de observação a data será convertida para frequência mensal por meio da imputação de recessão para os meses de duração do evento. Nessa formulação, os períodos de recessão serão representados pelo
+valor 0 e os períodos de normalidade 1.
+
+## Harding & Pagan (2002)
+
+No artigo seminal *Dissecting the cycle: a methodological investigation*, os autores desenvolvem algoritmo de **Bry e Boschan (1971)** para identificar os pontos de inflexão dos ciclos de negócios em frequência trimestral.
+
+```{r equacao}
+
+```
+
+
+
+
