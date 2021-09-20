@@ -142,13 +142,13 @@ rec_tbl |>
 
 # Expectativas do Mercado Financeiro
 
-- Curva de Juros é a principal variável explicativa na literatura de recessão (ver...);
+- Curva de Juros é a principal variável explicativa na literatura de recessão (ver *Estrella e Mishkin (1998)*);
 
 - Reflete a preferência por liquidez dos agentes econômicos - diferencial do juro de curto prazo frente o juro de longo prazo.
 
 - Literatura americana utiliza o Yield Spread;
 
-- Para o Brasil o principal equivalente é reportado como a **Tx. Swap DI Pré Fixada** (ver ...);
+- Para o Brasil o principal equivalente é reportado como a **Tx. Swap DI Pré Fixada** *Issler (2019)*;
 
 
 ```{r echo = FALSE, out.width='95%', out.height='40%'}
@@ -183,9 +183,9 @@ plotly::ggplotly(p)
 .pull-left[
 - A métrica utilizada é o spread entre a tx. de juro no mercado interbancário e os títulos públicos.
 
--  O equivalente para o Brasil seria naturalmente o spread entre a *taxa Selic Over* e a *Taxa CDI*, contudo **fulano** demonstra não aderência do spread ao ciclo.
+-  O equivalente para o Brasil seria naturalmente o spread entre a *taxa Selic Over* e a *Taxa CDI*, contudo a série não tem aderência ao ciclo.
 
-- **fulanos** endossam a utilização do **Índice de Liquidez (IL)** do Banco Central como proxy adequada.
+- *VR dos Santos Cardoso (2019)* sugerem correlação do **Índice de Liquidez (IL)** do Banco Central com o ciclo de negócios.
 
 - O **IL** relaciona o volume de ativos líquidos detidos pelas instituições com o fluxo de caixa estressado.
 ]
@@ -221,7 +221,7 @@ plotly::ggplotly(p)
 
 - Capta a desvalorização das empresas no mercado de ações;
 
-- **Fulano** confirma a correlação entre Ibovespa e Recessão.
+- Indicador amplamente utilizado - ver *Chauvet (2010); Issler (2019); Cavalcanti (2021)*.
 
 ]
 
@@ -230,7 +230,7 @@ plotly::ggplotly(p)
 
 - Capta a desvalorização de imóveis, lastro fundamental das dívidas familiares;
 
-- Para a economia brasileir **fulano** ressalta a relação....
+- *Dalla Riva (2012)* expõe relação positiva entre renda familiar e preço dos imoveis.
 
 ]
 .pull-left[
@@ -494,6 +494,11 @@ trainx <- df.train |>
 
 ### Modelo Estático
 
+```{r, echo = FALSE}
+estat <- Logistic_Estimation(Dicho_Y = trainy, Exp_X = trainx, Intercept = TRUE,
+                             Nb_Id = 1, Lag = 1, type_model = 1)
+```
+
 ```{r plot.model1, echo = FALSE, fig.height=4, fig.width=10}
 # Plot Modelos
 
@@ -513,13 +518,16 @@ abline(h=.5, lty=2)
 
 ```{r model 1, echo = FALSE, message=FALSE, warning=FALSE}
 # Modelo Estatico
-estat <- Logistic_Estimation(Dicho_Y = trainy, Exp_X = trainx, Intercept = TRUE,
-                             Nb_Id = 1, Lag = 1, type_model = 1)
 estat$Estimation
 ```
 
 ---
 ### Modelo Dinâmico
+```{r, echo = FALSE}
+dyn_bin <- Logistic_Estimation(Dicho_Y = trainy, Exp_X = trainx, Intercept = TRUE,
+                               Nb_Id = 1, Lag = 1, type_model = 2)
+```
+
 
 ```{r plot.model2, echo = FALSE, fig.height=4, fig.width=10}
 x1_range <- df.train$data
@@ -539,8 +547,7 @@ abline(h=.5, lty=2)
 
 ```{r model 2, echo = FALSE, message=FALSE, warning=FALSE}
 # Dynamic Model lag Binaria
-dyn_bin <- Logistic_Estimation(Dicho_Y = trainy, Exp_X = trainx, Intercept = TRUE,
-                               Nb_Id = 1, Lag = 1, type_model = 2)
+
 
 dyn_bin$Estimation
 ```
@@ -548,6 +555,11 @@ dyn_bin$Estimation
 ---
 
 ### Modelo Autoregressivo
+
+```{r, echo = FALSE}
+dyn_ind <- Logistic_Estimation(Dicho_Y = trainy, Exp_X = trainx, Intercept = TRUE,
+                               Nb_Id = 1, Lag = 1, type_model = 3)
+```
 
 ```{r plot.model3, echo = FALSE, fig.height=4, fig.width=10}
 x1_range <- df.train$data
@@ -566,14 +578,19 @@ abline(h=.5, lty=2)
 
 ```{r model 3, echo = FALSE, message=FALSE, warning=FALSE}
 # Dynamic Model lag index (Autoregressivo?)
-dyn_ind <- Logistic_Estimation(Dicho_Y = trainy, Exp_X = trainx, Intercept = TRUE,
-                               Nb_Id = 1, Lag = 1, type_model = 3)
+
 dyn_ind$Estimation
 ```
 
 ---
 
 ### Modelo Dinâmico Autoregressivo
+
+```{r, echo = FALSE}
+dyn_aut <- Logistic_Estimation(Dicho_Y = trainy, Exp_X = trainx, Intercept = TRUE,
+                               Nb_Id = 1, Lag = 1, type_model = 4)
+```
+
 
 ```{r plot.model4, echo = FALSE, fig.height=4, fig.width=10}
 x1_range <- df.train$data
@@ -593,8 +610,7 @@ abline(h=.5, lty=2)
 
 ```{r model 4, echo = FALSE, message=FALSE, warning=FALSE}
 # Dinamico Autoregressivo
-dyn_aut <- Logistic_Estimation(Dicho_Y = trainy, Exp_X = trainx, Intercept = TRUE,
-                               Nb_Id = 1, Lag = 1, type_model = 4)
+
 dyn_aut$Estimation
 ```
 
@@ -605,7 +621,34 @@ dyn_aut$Estimation
 - botar link do github e explicar a reprodutibilidade do trabalho e da apresentação
 
 ---
+# Referências
 
+$$@inproceedings{inproceedings,
+author = {Riva, Enrico and Leite Netto, Cassio},
+year = {2012},
+month = {09},
+pages = {},
+title = {A INFLUÊNCIA DO CRÉDITO IMOBILIÁRIO E DO NÍVEL DE RENDA DAS PESSOAS NOS PREÇOS DOS IMÓVEIS RESIDENCIAIS NO MUNICÍPIO DE SÃO PAULO},
+doi = {10.13140/2.1.1026.1764}
+}$$
+
+Fatores relacionados à liquidez estrutural dos bancos no Brasil
+VRS Cardoso, LA Campos, JA Dantas, OR Medeiros
+Revista Contabilidade & Finanças 30 (80), 252-267
+
+Uma Medida de PIB Mensal para o Brasil usando o Term Spread.
+Revista brasileira de economia. vol. 73, pp. 53-75, 2019
+João Victor Issler; Luana Moreira de Miranda Pimentel
+
+ESTRELLA, A.; MISHKIN, F. S. Predicting U.S. recessions: financial variables as leading indicators. Review of Economics and Statistics, v. 80, n. 1, p. 45-61, 1998.
+
+Don Harding, Adrian Pagan,
+Dissecting the cycle: a methodological investigation,
+Journal of Monetary Economics,
+Volume 49, Issue 2,
+2002,
+
+---
 class: center, middle
 
 # Agradecimentos
