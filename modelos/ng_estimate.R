@@ -28,23 +28,25 @@ summary(trainy)
 estat <- Logistic_Estimation(Dicho_Y = trainy, Exp_X = trainx, Intercept = TRUE,
                              Nb_Id = 1, Lag = 1, type_model = 1)
 estat$Estimation
+estat$R2
 
 # Dynamic Model lag Binaria
 dyn_bin <- Logistic_Estimation(Dicho_Y = trainy, Exp_X = trainx, Intercept = TRUE,
                                Nb_Id = 1, Lag = 1, type_model = 2)
 
 dyn_bin$Estimation
+dyn_bin$R2
 
 # Dynamic Model lag index (Autoregressivo?)
 dyn_ind <- Logistic_Estimation(Dicho_Y = trainy, Exp_X = trainx, Intercept = TRUE,
                                Nb_Id = 1, Lag = 1, type_model = 3)
 dyn_ind$Estimation
-
+dyn_ind$R2
 # Dinamico Autoregressivo
 dyn_aut <- Logistic_Estimation(Dicho_Y = trainy, Exp_X = trainx, Intercept = TRUE,
                                Nb_Id = 1, Lag = 1, type_model = 4)
 dyn_aut$Estimation
-
+dyn_aut$R2
 # Plot Modelos
 
 x1_range <- df.train$data
