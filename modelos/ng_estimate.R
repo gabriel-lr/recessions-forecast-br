@@ -75,3 +75,17 @@ lines(x1_range[-1], dyn_aut$prob,
       col="green")
 # add a horizontal line at p=.5
 abline(h=.5, lty=2)
+
+## Previsão
+
+a <- Simul_GIRF(Dicho_Y = trainy,
+           Exp_X = trainx,
+           t_mod = 1,
+           Int = TRUE,
+           n_simul = 10,
+           horizon = 3,
+           Lag = 1,
+           centile_shock = 0.95,
+           OC = "AM") 
+  
+a
