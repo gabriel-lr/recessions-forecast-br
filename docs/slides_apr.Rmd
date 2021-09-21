@@ -657,10 +657,9 @@ class: center, middle
 
 # Agradecimentos
 
-```{r ghpage, echo = FALSE}
+```{r ghpage, echo = FALSE, message=FALSE}
 
-usethis::use_github_pages(branch = "main",
-                       path = "/reports")
+usethis::use_github_pages(branch = "main")
 
 
 ```
