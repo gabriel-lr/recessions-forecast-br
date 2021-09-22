@@ -88,7 +88,7 @@ class: center
 
 # Variáveis Explicativas Brasil
 
-```{r tabela fontes,  echo = FALSE, eval=TRUE, fig.height=3, fig.width=7}
+```{r tabela fontes,  echo = FALSE, eval=TRUE, message = FALSE, warnings = FALSE, fig.height=3, fig.width=7}
 # Tabela
 source("summary_tbl.R", local = knitr::knit_global())
 fonte_tbl |> 
@@ -306,7 +306,7 @@ $i_{t}=\sum _{x}m_{t}$
 
 $$I_{t}=\frac{200+i_{t}}{200-i_{t}}I_{t-1}$$
 ---
-```{r tcb data, echo = FALSE}
+```{r tcb data, echo = FALSE, message = FALSE, warnings = FALSE}
 
 ## API Request
 
