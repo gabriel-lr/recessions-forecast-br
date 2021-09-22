@@ -651,8 +651,7 @@ class: center, middle
 
 ```{r ghpage, echo = FALSE, message=FALSE}
 
-usethis::use_github_pages(branch = "main",
-                          path = "/docs")
+
 
 
 ```
