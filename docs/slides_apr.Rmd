@@ -438,31 +438,23 @@ kbl(booktabs = T, caption = "Estatísticas Descritivas",
 ```
 
 ---
-.pull-left[
-## Matriz de Correlação
-```{r echo = FALSE, fig.height=5, fig.width=5}
-# Correlation
-my_data |>
-  select(-data, -dummy) |>
-  drop_na() |> 
-  cor() |> 
-  corrplot::corrplot(method = 'color', number.digits = 2, addCoef.col = 'white', 
-                     sig.level = 0.05) #colocar numeros
+# Estimação dos Modelos
 
-```
-]
-.pull-right[
-## Teste de normalidade
-```{r echo = FALSE, fig.height=5, fig.width=5}
+- Estático
 
-# Normality
-my_data |> 
-dlookr::normality() |> 
-kbl(booktabs = T, caption = "Teste Shapiro-Walk") |> 
-  kable_styling(latex_options = c("striped", "hold_position"),
-                full_width = F)
-```
-]
+$$\pi _{t} = \alpha + \beta X_{t-k}$$
+
+- Dinâmico
+
+$$\pi _{t} = \alpha + \beta X_{t-k}+\delta Y_{t-1}$$
+
+- Autoregressivo
+
+$$\pi _{t} = \alpha + \beta X_{t-k}+ \gamma\pi_{t-1}$$
+
+- Dinâmico Autoregressivo
+
+$$\pi _{t} = \alpha + \beta X_{t-k}+\delta Y_{t-1}+\gamma\pi_{t-1}$$
 
 ---
 
