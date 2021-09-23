@@ -209,6 +209,7 @@ ts.eda <- function(x){
 ts.eda("ibov")
 
 
+
 ndiffs(xts.swap)
 nsdiffs(xts.swap)
 

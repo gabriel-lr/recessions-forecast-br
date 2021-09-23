@@ -92,6 +92,7 @@ class: center
 # Tabela
 source("summary_tbl.R", local = knitr::knit_global())
 fonte_tbl |> 
+  select(-'Ap.') |> 
 kbl(booktabs = T, caption = "Séries Temporais", 
     format = "html") |> 
   kable_paper(full_width = F) |> 
@@ -415,46 +416,23 @@ plotly::ggplotly(p)
 ```
 
 ---
-
-# Análise Exploratória dos Dados
-
-- Mostar as análises estátisticas dos dados garimpados
-
-```{r echo=FALSE, message=FALSE, fig.height=3, fig.width=1}
-# Análise Exploratória
-library(tidyverse)
-library(xts)
-library(forecast)
-library(kableExtra)
-# Estatísticas Descritivas
-  my_data |> 
-  dlookr::describe() |> 
-    select(-c(10:26)) |> 
-kbl(booktabs = T, caption = "Estatísticas Descritivas", 
-    format = "html") |> 
-  kable_paper(full_width = F) |> 
-    footnote("Elaboração Própria", footnote_as_chunk = T)
- 
-```
-
----
 # Estimação dos Modelos
 
 - Estático
 
-$$\pi _{t} = \alpha + \beta X_{t-k}$$
+$$Prob(\pi_t | X_{t-1}) = \alpha + \beta X_{t-k}$$
 
 - Dinâmico
 
-$$\pi _{t} = \alpha + \beta X_{t-k}+\delta Y_{t-1}$$
+$$Prob(\pi_t | X_{t-1}) = \alpha + \beta X_{t-k}+\delta Y_{t-1}$$
 
 - Autoregressivo
 
-$$\pi _{t} = \alpha + \beta X_{t-k}+ \gamma\pi_{t-1}$$
+$$Prob(\pi_t | X_{t-1}) = \alpha + \beta X_{t-k}+ \gamma\pi_{t-1}$$
 
 - Dinâmico Autoregressivo
 
-$$\pi _{t} = \alpha + \beta X_{t-k}+\delta Y_{t-1}+\gamma\pi_{t-1}$$
+$$Prob(\pi_t | X_{t-1}) = \alpha + \beta X_{t-k}+\delta Y_{t-1}+\gamma\pi_{t-1}$$
 
 ---
 
@@ -484,8 +462,6 @@ trainx <- df.train |>
 
 ```
 
-### Modelo Estático
-
 ```{r, echo = FALSE}
 estat <- Logistic_Estimation(Dicho_Y = trainy, Exp_X = trainx, Intercept = TRUE,
                              Nb_Id = 1, Lag = 1, type_model = 1)
@@ -498,7 +474,7 @@ x1_range <- df.train$data
 plot(x1_range[-1], trainy[-1], 
      ylim=c(0,1),
      pch = "+", 
-     xlab="Data", ylab="Resultado", main="Probabilidade")
+     xlab="Data", ylab="Probabilidade", main="Modelo Estático")
 # Add line para modelo estat
 lines(x1_range[-1], estat$prob, 
       type="l", 
@@ -508,14 +484,19 @@ abline(h=.5, lty=2)
 ```
 
 
-```{r model 1, echo = FALSE, message=FALSE, warning=FALSE}
+```{r model 1, echo = FALSE, message=FALSE, warning=FALSE, fig.height=4, fig.width=10}
 # Modelo Estatico
-estat$Estimation
-estat$R2
+est.tbl <- paste("adjust. R² =", round(estat$R2, digits = 4), 
+           "AIC =", round(estat$AIC, digits = 4),
+           "BIC =", round(estat$BIC, digits = 4))
+estat$Estimation |> 
+  gt::gt() |> 
+  gt::tab_source_note(est.tbl)
+  
 ```
 
 ---
-### Modelo Dinâmico
+
 ```{r, echo = FALSE}
 dyn_bin <- Logistic_Estimation(Dicho_Y = trainy, Exp_X = trainx, Intercept = TRUE,
                                Nb_Id = 1, Lag = 1, type_model = 2)
@@ -527,7 +508,7 @@ x1_range <- df.train$data
 plot(x1_range[-1], trainy[-1], 
      ylim=c(0,1),
      pch = "+", 
-     xlab="Data", ylab="Resultado", main="Probabilidade")
+     xlab="Data", ylab="Probabilidade", main="Modelo Dinâmico")
 # Add line para modelo dyn bin
 lines(x1_range[-1], dyn_bin$prob, 
       type="l", 
@@ -538,17 +519,18 @@ abline(h=.5, lty=2)
 ```
 
 
-```{r model 2, echo = FALSE, message=FALSE, warning=FALSE}
+```{r model 2, echo = FALSE, message=FALSE, warning=FALSE, fig.height=4, fig.width=10}
 # Dynamic Model lag Binaria
-
-
-dyn_bin$Estimation
-dyn_bin$R2
+db.tbl <- paste("adjust. R² =", round(dyn_bin$R2, digits = 4), 
+           "AIC =", round(dyn_bin$AIC, digits = 4),
+           "BIC =", round(dyn_bin$BIC, digits = 4))
+dyn_bin$Estimation |> 
+  gt::gt() |> 
+  gt::tab_source_note(db.tbl)
 ```
 
 ---
 
-### Modelo Autoregressivo
 
 ```{r, echo = FALSE}
 dyn_ind <- Logistic_Estimation(Dicho_Y = trainy, Exp_X = trainx, Intercept = TRUE,
@@ -560,7 +542,7 @@ x1_range <- df.train$data
 plot(x1_range[-1], trainy[-1], 
      ylim=c(0,1),
      pch = "+", 
-     xlab="Data", ylab="Resultado", main="Probabilidade")
+     xlab="Data", ylab="Probabilidade", main="Modelo Autoregressivo")
 # Add line modelo dyn ind
 lines(x1_range[-1], dyn_ind$prob, 
       type="l", 
@@ -570,16 +552,17 @@ lines(x1_range[-1], dyn_ind$prob,
 abline(h=.5, lty=2)
 ```
 
-```{r model 3, echo = FALSE, message=FALSE, warning=FALSE}
+```{r model 3, echo = FALSE, message=FALSE, warning=FALSE, fig.height=4, fig.width=10}
 # Dynamic Model lag index (Autoregressivo?)
-
-dyn_ind$Estimation
-dyn_ind$R2
+di.tbl <- paste("adjust. R² =", round(dyn_ind$R2, digits = 4), 
+           "AIC =", round(dyn_ind$AIC, digits = 4),
+           "BIC =", round(dyn_ind$BIC, digits = 4))
+dyn_ind$Estimation |> 
+  gt::gt() |> 
+  gt::tab_source_note(di.tbl)
 ```
 
 ---
-
-### Modelo Dinâmico Autoregressivo
 
 ```{r, echo = FALSE}
 dyn_aut <- Logistic_Estimation(Dicho_Y = trainy, Exp_X = trainx, Intercept = TRUE,
@@ -587,12 +570,12 @@ dyn_aut <- Logistic_Estimation(Dicho_Y = trainy, Exp_X = trainx, Intercept = TRU
 ```
 
 
-```{r plot.model4, echo = FALSE, fig.height=4, fig.width=10}
+```{r plot.model4, echo = FALSE, fig.height=3, fig.width=10}
 x1_range <- df.train$data
 plot(x1_range[-1], trainy[-1], 
      ylim=c(0,1),
      pch = "+", 
-     xlab="Data", ylab="Resultado", main="Probabilidade")
+     xlab="Data", ylab="Probabilidade", main="Modelo Dinâmico Autoregressivo")
 # Add line modelo dyn aut
 lines(x1_range[-1], dyn_aut$prob, 
       type="l", 
@@ -603,18 +586,47 @@ abline(h=.5, lty=2)
 ```
   
 
-```{r model 4, echo = FALSE, message=FALSE, warning=FALSE}
+```{r model 4, echo = FALSE, message=FALSE, warning=FALSE, fig.height=4, fig.width=10}
 # Dinamico Autoregressivo
-
-dyn_aut$Estimation
-dyn_aut$R2
+da.tbl <- paste("adjust. R² =", round(dyn_aut$R2, digits = 4), 
+           "AIC =", round(dyn_aut$AIC, digits = 4),
+           "BIC =", round(dyn_aut$BIC, digits = 4))
+dyn_aut$Estimation |> 
+  gt::gt() |> 
+  gt::tab_source_note(da.tbl)
 ```
 
 ---
+# Váriaveis Modelo LASSO
 
+
+- Renda e Produto:
+
+Produção Setor Mineral, Gás Natural, Maquinário Agricola, Indice de Falências, Estoque de Veículos nas Revendas, Exportações
+
+- Mercado de Trabalho:
+
+Número de demissões, horas trabalhadas na industria.
+
+- Consumo/Demanda:
+
+Índice de Confiança do Consumidor, Número de vendas, Importações, Consumo Energia Elétrica Residencial, Indice Preço de Importação - Total
+
+- Financeiras:
+
+Meios de Pagamento, EMBI+Risco Brasil, Taxa de Retorno Ibovespa.
+
+- Contas Nacionais:
+
+Balança Comercial (Total), Taxa Cresc. Dívida Fiscal Líquida Setor Pub., Indice Preços Commodities
+
+---
+class: center
 # Reprodutibilidade
 
-- botar link do github e explicar a reprodutibilidade do trabalho e da apresentação
+ Todo o trabalho foi reproduzido utlizando o Software R.
+
+Códigos disponíveis em - https://github.com/gabriel-lr/recessions-forecast-br
 
 ---
 # Referências
@@ -647,7 +659,7 @@ Volume 49, Issue 2,
 ---
 class: center, middle
 
-# Agradecimentos
+# Obrigado!
 
 ```{r ghpage, echo = FALSE, message=FALSE}
 
