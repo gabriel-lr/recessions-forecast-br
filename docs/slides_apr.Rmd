@@ -415,46 +415,23 @@ plotly::ggplotly(p)
 ```
 
 ---
-
-# Análise Exploratória dos Dados
-
-- Mostar as análises estátisticas dos dados garimpados
-
-```{r echo=FALSE, message=FALSE, fig.height=3, fig.width=1}
-# Análise Exploratória
-library(tidyverse)
-library(xts)
-library(forecast)
-library(kableExtra)
-# Estatísticas Descritivas
-  my_data |> 
-  dlookr::describe() |> 
-    select(-c(10:26)) |> 
-kbl(booktabs = T, caption = "Estatísticas Descritivas", 
-    format = "html") |> 
-  kable_paper(full_width = F) |> 
-    footnote("Elaboração Própria", footnote_as_chunk = T)
- 
-```
-
----
 # Estimação dos Modelos
 
 - Estático
 
-$$\pi _{t} = \alpha + \beta X_{t-k}$$
+$$Prob(\pi_t | X_{t-1}) = \alpha + \beta X_{t-k}$$
 
 - Dinâmico
 
-$$\pi _{t} = \alpha + \beta X_{t-k}+\delta Y_{t-1}$$
+$$Prob(\pi_t | X_{t-1}) = \alpha + \beta X_{t-k}+\delta Y_{t-1}$$
 
 - Autoregressivo
 
-$$\pi _{t} = \alpha + \beta X_{t-k}+ \gamma\pi_{t-1}$$
+$$Prob(\pi_t | X_{t-1}) = \alpha + \beta X_{t-k}+ \gamma\pi_{t-1}$$
 
 - Dinâmico Autoregressivo
 
-$$\pi _{t} = \alpha + \beta X_{t-k}+\delta Y_{t-1}+\gamma\pi_{t-1}$$
+$$Prob(\pi_t | X_{t-1}) = \alpha + \beta X_{t-k}+\delta Y_{t-1}+\gamma\pi_{t-1}$$
 
 ---
 
@@ -498,7 +475,7 @@ x1_range <- df.train$data
 plot(x1_range[-1], trainy[-1], 
      ylim=c(0,1),
      pch = "+", 
-     xlab="Data", ylab="Resultado", main="Probabilidade")
+     xlab="Data", ylab="Probabilidade", main="Modelo Estático")
 # Add line para modelo estat
 lines(x1_range[-1], estat$prob, 
       type="l", 
@@ -527,7 +504,7 @@ x1_range <- df.train$data
 plot(x1_range[-1], trainy[-1], 
      ylim=c(0,1),
      pch = "+", 
-     xlab="Data", ylab="Resultado", main="Probabilidade")
+     xlab="Data", ylab="Probabilidade", main="Modelo Dinâmico")
 # Add line para modelo dyn bin
 lines(x1_range[-1], dyn_bin$prob, 
       type="l", 
@@ -560,7 +537,7 @@ x1_range <- df.train$data
 plot(x1_range[-1], trainy[-1], 
      ylim=c(0,1),
      pch = "+", 
-     xlab="Data", ylab="Resultado", main="Probabilidade")
+     xlab="Data", ylab="Probabilidade", main="Modelo Autoregressivo")
 # Add line modelo dyn ind
 lines(x1_range[-1], dyn_ind$prob, 
       type="l", 
@@ -592,7 +569,7 @@ x1_range <- df.train$data
 plot(x1_range[-1], trainy[-1], 
      ylim=c(0,1),
      pch = "+", 
-     xlab="Data", ylab="Resultado", main="Probabilidade")
+     xlab="Data", ylab="Probabilidade", main="Modelo Dinâmico Autoregressivo")
 # Add line modelo dyn aut
 lines(x1_range[-1], dyn_aut$prob, 
       type="l", 
@@ -611,7 +588,30 @@ dyn_aut$R2
 ```
 
 ---
+# Váriaveis Modelo LASSO
 
+
+- Renda e Produto:
+
+Produção Setor Mineral, Gás Natural, Maquinário Agricola, Indice de Falências, Estoque de Veículos nas Revendas, Exportações
+
+- Mercado de Trabalho:
+
+Número de demissões, horas trabalhadas na industria.
+
+- Consumo/Demanda:
+
+Índice de Confiança do Consumidor, Número de vendas, Importações, Consumo Energia Elétrica Residencial, Indice Preço de Importação - Total
+
+- Financeiras:
+
+Meios de Pagamento, EMBI+Risco Brasil, Taxa de Retorno Ibovespa.
+
+- Contas Nacionais:
+
+Balança Comercial (Total), Taxa Cresc. Dívida Fiscal Líquida Setor Pub., Indice Preços Commodities
+
+---
 # Reprodutibilidade
 
 - botar link do github e explicar a reprodutibilidade do trabalho e da apresentação
