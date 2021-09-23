@@ -631,14 +631,7 @@ Códigos disponíveis em - https://github.com/gabriel-lr/recessions-forecast-br
 ---
 # Referências
 
-$$@inproceedings{inproceedings,
-author = {Riva, Enrico and Leite Netto, Cassio},
-year = {2012},
-month = {09},
-pages = {},
-title = {A INFLUÊNCIA DO CRÉDITO IMOBILIÁRIO E DO NÍVEL DE RENDA DAS PESSOAS NOS PREÇOS DOS IMÓVEIS RESIDENCIAIS NO MUNICÍPIO DE SÃO PAULO},
-doi = {10.13140/2.1.1026.1764}
-}$$
+Kauppi, H., Saikkonen, P., 2008. Predicting US recessions with dynamic binary response models. Review of Economics and Statistics 90 (4), 777–791
 
 Fatores relacionados à liquidez estrutural dos bancos no Brasil
 VRS Cardoso, LA Campos, JA Dantas, OR Medeiros
@@ -650,11 +643,10 @@ João Victor Issler; Luana Moreira de Miranda Pimentel
 
 ESTRELLA, A.; MISHKIN, F. S. Predicting U.S. recessions: financial variables as leading indicators. Review of Economics and Statistics, v. 80, n. 1, p. 45-61, 1998.
 
-Don Harding, Adrian Pagan,
-Dissecting the cycle: a methodological investigation,
-Journal of Monetary Economics,
-Volume 49, Issue 2,
-2002,
+Don Harding, Adrian Pagan, Dissecting the cycle: a methodological investigation,
+Journal of Monetary Economics, Volume 49, Issue 2, 2002.
+
+Eric C.Y. Ng, Forecasting US recessions with various risk factors and dynamic probit models, Journal of Macroeconomics, Volume 34, Issue 1, 2012,Pages 112-125,
 
 ---
 class: center, middle
