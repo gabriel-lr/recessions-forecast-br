@@ -24,6 +24,7 @@ options(htmltools.dir.version = FALSE)
 
 ```{r echo = FALSE}
 library(kableExtra)
+library(dplyr)
 my_data <- readRDS("my_data.rds")
 ```
 
@@ -384,6 +385,7 @@ df.tcb$data <- str_remove(df.tcb$data, pattern = "T.*$") |>
 source("tcb_tbl.R", local = knitr::knit_global())
 
 tcb_tbl |> 
+  select(-'Ap.') |> 
   kbl(booktabs = T, caption = "Indicadores Antecedentes de Atividade Econômica", 
     format = "html") |> 
   kable_paper(full_width = F) |> 
