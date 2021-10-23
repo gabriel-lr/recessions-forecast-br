@@ -29,56 +29,88 @@ teste.xts <- xts(teste[,-1],
 estat <- dbm(teste.xts, x.vars = c("swap", "tcb", "il"),
                arp = 0, arq = 0)
 estat
-predict(estat, n.ahead = 2)
+predict(estat, n.ahead = 4)
 estat$fit$fitted.values
 
 # dinamico
 dyn_bin <- dbm(teste.xts, x.vars = c("swap", "tcb","il"),
                arp = 0, arq = 1)
 dyn_bin
-predict(dyn_bin, n.ahead = 2)
+predict(dyn_bin, n.ahead = 4)
 
 # autoregressivo
 aut <- dbm(teste.xts, x.vars = c("swap", "tcb", "il"),
                arp = 1, arq = 0)
 aut
-predict(aut, n.ahead = 2)
+predict(aut, n.ahead = 4)
 
 ## Dinâmico Autoregressivo
 dyn_aut <- dbm(teste.xts, x.vars = c("swap", "tcb", "il"),
                arp = 1, arq = 1)
 dyn_aut
-predict(dyn_aut, n.ahead = 2)
+predict(dyn_aut, n.ahead = 4)
 
 #----------------------- Plots -----------------------------------------#
 
-# Plot Modelos
+# Estatico
 
 x1_range <- teste$data
 plot(x1_range, teste.xts$codace, 
      ylim=c(0,1),
      pch = "+", 
-     xlab="Data", ylab="Resultado", main="Probabilidade")
+     xlab="Data", ylab="Probabilidade", main="Probit Estático")
 # Add line para modelo estat
 lines(x1_range, estat$fit$fitted.values, 
       type="l", 
       col="blue")
-# Add line para modelo dyn bin
+
+
+
+#Dinamico
+x1_range <- teste$data
+plot(x1_range, teste.xts$codace, 
+     ylim=c(0,1),
+     pch = "+", 
+     xlab="Data", ylab="Probabilidade", main="Probit Dinâmico")
 lines(x1_range, dyn_bin$fit$fitted.values, 
-      type="l", 
-      lwd=2,
-      col="turquoise2")
-# Add line modelo dyn ind
+      type="l",
+      col="blue")
+
+
+# Autoregressivo
+x1_range <- teste$data
+plot(x1_range, teste.xts$codace, 
+     ylim=c(0,1),
+     pch = "+", 
+     xlab="Data", ylab="Probabilidade", main="Probit Autoregressivo")
 lines(x1_range, aut$fit$fitted.values, 
       type="l", 
-      lwd=2, 
-      col="orangered")
-# Add line modelo dyn aut
+      col="blue")
+
+# Autoregressivo Dinâmico
+x1_range <- teste$data
+plot(x1_range, teste.xts$codace, 
+     ylim=c(0,1),
+     pch = "+", 
+     xlab="Data", ylab="Probabilidade", main="Probit Autoregressivo Dinâmico")
 lines(x1_range, dyn_aut$fit$fitted.values, 
       type="l", 
-      lwd=2, 
-      col="green")
-# add a horizontal line at p=.5
-abline(h=.5, lty=2)
+      col="blue")
 
+#--------------- Definindo lag ideal-------------------------#
+
+#swap
+lag.swap <- dbm(teste.xts, x.vars = c("swap"),
+             arp = 0, arq = 0, x.lags = 12)
+lag.swap
+
+#tcb
+lag.tcb <- dbm(teste.xts, x.vars = c("tcb"),
+                arp = 0, arq = 0, x.lags = 1)
+lag.tcb
+
+#il
+lag.il <- dbm(teste.xts, x.vars = c("il"),
+               arp = 0, arq = 0, x.lags = 5)
+lag.il
 
