@@ -5,6 +5,7 @@ library(tidyverse)
 library(ipeadatar)
 library(fredr)
 library(purrr)
+library(data.table)
 
 #------------------------ IPEA --------------------------------------#
 
@@ -202,4 +203,7 @@ fred.list[[11]] <- fredr(fred.cod[11])
 Sys.sleep(2)
 fred.list[[12]] <- fredr(fred.cod[12])
 
+#----------------- Consolidando base ---------------------------#
 
+fwrite(a, "dt.lasso.csv")
+fread(a)
