@@ -204,6 +204,5 @@ Sys.sleep(2)
 fred.list[[12]] <- fredr(fred.cod[12])
 
 #----------------- Consolidando base ---------------------------#
+arrow::write_csv_arrow(ipea.list, "dt_lasso.csv")
 
-fwrite(a, "dt.lasso.csv")
-fread(a)
