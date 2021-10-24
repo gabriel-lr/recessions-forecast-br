@@ -3,6 +3,8 @@
 
 library(tidyverse)
 library(ipeadatar)
+library(fredr)
+library(purrr)
 
 #------------------------ IPEA --------------------------------------#
 
@@ -131,7 +133,12 @@ cod <- c("ABPO12_PAPEL12",
 chave <- cbind(nome,cod)
 
 #importando
-ipea.list <- lapply(chave[,2],ipeadata)
+ipea.list <- purrr::map_dfr(cod, ipeadata)|> 
+  pivot_wider(names_from = code,
+              values_from = value) |> 
+  select(-tcode, -uname)
+
+
 
 #-------------------------- FRED MD -----------------------------------#
 fredr_set_key("893ec9febb02fe0790b3a0d7ef5583df")
@@ -167,6 +174,31 @@ fred.cod <- c("BRALORSGPNOSTSAM",
               "BRABCBUTE02STSAM")
 
 fred.chave <- cbind(fred.nome,fred.cod)
+# Query... buscar outra solucao
+fred.list <- list()
+Sys.sleep(2)
+fred.list[[1]] <- fredr(fred.cod[1])
+Sys.sleep(2)
+fred.list[[2]] <- fredr(fred.cod[2])
+Sys.sleep(2)
+fred.list[[3]] <- fredr(fred.cod[3])
+Sys.sleep(2)
+fred.list[[4]] <- fredr(fred.cod[4])
+Sys.sleep(2)
+fred.list[[5]] <- fredr(fred.cod[5])
+Sys.sleep(2)
+fred.list[[6]] <- fredr(fred.cod[6])
+Sys.sleep(2)
+fred.list[[7]] <- fredr(fred.cod[7])
+Sys.sleep(2)
+fred.list[[8]] <- fredr(fred.cod[8])
+Sys.sleep(2)
+fred.list[[9]] <- fredr(fred.cod[9])
+Sys.sleep(2)
+fred.list[[10]] <- fredr(fred.cod[10])
+Sys.sleep(2)
+fred.list[[11]] <- fredr(fred.cod[11])
+Sys.sleep(2)
+fred.list[[12]] <- fredr(fred.cod[12])
 
-fred.list <- lapply(fred.chave[,2],fredr)
 
