@@ -174,6 +174,7 @@ fred.cod <- c("BRALORSGPNOSTSAM",
               "BRABCBUTE02STSAM")
 
 fred.chave <- cbind(fred.nome,fred.cod)
+fred.list <- purrr::map_dfr(fred.cod, fredr)
 # Query... buscar outra solucao
 fred.list <- list()
 Sys.sleep(2)
